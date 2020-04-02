@@ -4,7 +4,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 import plotly.graph_objects as go
 import dash_bootstrap_components as dbc
-external_stylesheets =['https://codepen.io/chriddyp/pen/bWLwgP.css', dbc.themes.BOOTSTRAP]
+#external_stylesheets =['https://codepen.io/chriddyp/pen/bWLwgP.css', dbc.themes.BOOTSTRAP]
 
 
 
@@ -352,8 +352,8 @@ style_span={'font-size':'35px','text-transform':'uppercase','font-weight':'norma
 
 style_dropdown={'width': '500px','fontSize' : '20px','padding-left' : '50px'}
 
-style_intro={'text-align':'center','display':'inline-block'}
-style_up={'text-align':'center','display':'inline-block'}
+style_intro={'text-align':'center','width':'330px','display':'inline-block'}
+style_up={'text-align':'center','width':'330px','display':'inline-block'}
 
 
 
@@ -362,7 +362,7 @@ style_up={'text-align':'center','display':'inline-block'}
 
 #external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+app = dash.Dash(__name__)
 server=app.server
 app.css.config.serve_locally = True
 app.scripts.config.serve_locally = True
