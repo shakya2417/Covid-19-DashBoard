@@ -341,7 +341,7 @@ tab_selected_style = {
 }
 
 style_tab_heading={'color':'white',
-              'textAlign': 'center',
+              'text-align': 'center',
                'margin': '48px 0', 
                'fontFamily': 'system-ui',}
 
@@ -349,6 +349,9 @@ style_span={'font-size':'35px','text-transform':'uppercase','font-weight':'norma
 'color':'white','fontFamily': 'Times New Roman'}
 
 style_dropdown={'width': '500px','fontSize' : '20px','padding-left' : '50px'}
+
+style_intro={'text-align':'center','display':'inline-block'}
+style_up={'text-align':'center','display':'inline-block'}
 
 
 
@@ -358,7 +361,7 @@ style_dropdown={'width': '500px','fontSize' : '20px','padding-left' : '50px'}
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-server=app.server
+#server=app.server
 app.css.config.serve_locally = True
 app.scripts.config.serve_locally = True
 
@@ -375,56 +378,47 @@ app.layout=html.Div([
               html.Span('Active Cases',className="panel-title",
                   style=style_span),
 
-              html.Div([
-                html.H4(str(df_group['Active'].sum()),style={'color':'white','font-size':'30px'})
-                ]),
+              
+                html.H4(str(df_group['Active'].sum()),style={'color':'white','font-size':'30px'}),
 
 
               ],style={'text-align':'center'},className="panel-heading"),
 
-              ],style={'width':'360px','display':'inline-block'}),
-        html.Div([
+              ],style=style_up),
+        
 
             html.Div([
               html.Span('Confirm Cases',className="panel-title",
                   style=style_span),
 
-              html.Div([
-                html.H4(str(df_group['Confirmed'].sum()),style={'color':'white','font-size':'30px'})
-                ]),
+              
+                html.H4(str(df_group['Confirmed'].sum()),style={'color':'white','font-size':'30px'}),
 
 
-              ],style={'text-align':'center'},className="panel-heading"),
-
-              ],style={'width':'360px','display':'inline-block'}),
-        html.Div([
+              ],style=style_up,className="panel-heading"),
+        
 
             html.Div([
               html.Span('Recovered Cases',className="panel-title",
                   style=style_span),
 
-              html.Div([
-                html.H4(str(df_group['Recovered'].sum()),style={'color':'white','font-size':'30px'})
-                ]),
+                html.H4(str(df_group['Recovered'].sum()),style={'color':'white','font-size':'30px'}),
 
 
-              ],style={'text-align':'center'},className="panel-heading"),
+              ],style=style_up,className="panel-heading"),
 
-              ],style={'width':'360px','display':'inline-block'}),
-        html.Div([
+              
+        
 
             html.Div([
               html.Span('Deaths ',className="panel-title",
                   style=style_span),
 
-              html.Div([
-                html.H4(str(df_group['Deaths'].sum()),style={'color':'white','font-size':'30px'})
-                
-                  ]),
+                html.H4(str(df_group['Deaths'].sum()),style={'color':'white','font-size':'30px'}),
 
-                ],style={'text-align':'center'},className="panel-heading"),
+                ],style=style_up,className="panel-heading"),
 
-              ],style={'width':'360px','display':'inline-block'})
+              
             ],#last one
         className="panel panel-default",style={'background-color':'#100e17','border':'10px #2F4F4F solid'
         ,'margin':'10px'}),
@@ -474,7 +468,7 @@ app.layout=html.Div([
                                                   'display': 'inline-block'})
 
 
-                     ])
+                     ]),
                      ],style=tab_style, selected_style=tab_selected_style),
 
                   
@@ -590,20 +584,20 @@ app.layout=html.Div([
               html.Span('Created By:',className="panel-title",
                   style={'font-size':'25px','text-transform':'uppercase','font-weight':'normal','color':'white'}),
 
-              html.Div([
+              
                 html.H4('Ramakant Shakya',style={'color':'white','font-size':'20px'}),
                 html.H4('(Data Science Enthusiast)',style={'color':'white','font-size':'20px'}),
-                ]),
+                
 
 
-              ],style={'text-align':'center','width':'360px','display':'inline-block'},className="panel-heading"),
+              ],style=style_intro,className="panel-heading"),
 
 
             html.Div([
               html.Span('Linkedin',className="panel-title",
-                  style={'font-size':'25px','text-transform':'uppercase','font-weight':'100','color':'white'}),
+                  style={'font-size':'25px','text-transform':'uppercase','font-weight':'normal','color':'white'}),
 
-              html.Div([
+              
 
                 html.H4(html.A("Linkedin Profile", href='https://www.linkedin.com/in/ramakantshakya/', target="_blank",
                   style={'color':'white','font-size':'20px'})
@@ -611,40 +605,40 @@ app.layout=html.Div([
                 html.H4(html.A("Github Profile", href='https://github.com/shakya2417', target="_blank",
                   style={'color':'white','font-size':'20px'})
                   ,),
-                ]),
+                
 
 
-              ],style={'text-align':'center','width':'360px','display':'inline-block'},className="panel-heading"),
+              ],style=style_intro,className="panel-heading"),
 
               
         
 
             html.Div([
               html.Span('Any Suggestion',className="panel-title",
-                  style={'font-size':'25px','text-transform':'uppercase','font-weight':'100','color':'white'}),
+                  style={'font-size':'25px','text-transform':'uppercase','font-weight':'normal','color':'white'}),
 
-              html.Div([
+              
                 html.H4('Mait at:',style={'color':'white','font-size':'20px'}),
                 html.H4('ramakantshakya@gmail.com',style={'color':'white','font-size':'20px'})
-                ]),
+                
 
 
-              ],style={'text-align':'center','width':'360px','display':'inline-block'},className="panel-heading"),
+              ],style=style_intro,className="panel-heading"),
 
               
       
 
             html.Div([
               html.Span('Last Updated ',className="panel-title",
-                  style={'font-size':'25px','text-transform':'uppercase','font-weight':'100','color':'white'}),
+                  style={'font-size':'25px','text-transform':'uppercase','font-weight':'normal','color':'white'}),
 
-              html.Div([
+              
                 html.H4(str(df['Last_Update'][0])+'(Johns Hopkins)',style={'color':'white','font-size':'20px'}),
                 html.H4('Data: Johns Hopkins University',style={'color':'white','font-size':'20px'})
                 
-                  ]),
+                  
 
-                ],style={'text-align':'center','width':'360px','display':'inline-block'},className="panel-heading"),
+                ],style=style_intro,className="panel-heading"),
 
               
             ],#last one of intro
