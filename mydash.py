@@ -351,7 +351,7 @@ style_span={'font-size':'30px','font-weight':'normal',
 
 style_dropdown={'width': '500px','fontSize' : '20px','padding-left' : '50px'}
 
-style_intro={'text-align':'center','width':'2500px','display':'inline-block'}
+style_intro={'text-align':'center','width':'250px','display':'inline-block'}
 style_up={'text-align':'center','width':'250px','display':'inline-block'}
 
 
