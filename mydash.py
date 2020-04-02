@@ -350,8 +350,8 @@ style_span={'font-size':'35px','text-transform':'uppercase','font-weight':'norma
 
 style_dropdown={'width': '500px','fontSize' : '20px','padding-left' : '50px'}
 
-style_intro={'text-align':'center','width':'360px','display':'inline-block'}
-style_up={'text-align':'center','width':'360px','display':'inline-block'}
+style_intro={'text-align':'center','width':'300px','display':'inline-block'}
+style_up={'text-align':'center','width':'300px','display':'inline-block'}
 
 
 
