@@ -351,8 +351,8 @@ style_span={'font-size':'30px','font-weight':'normal',
 
 style_dropdown={'width': '500px','fontSize' : '20px','padding-left' : '50px'}
 
-style_intro={'text-align':'center','width':'300px','display':'inline-block'}
-style_up={'text-align':'center','width':'300px','display':'inline-block'}
+style_intro={'text-align':'center','width':'2500px','display':'inline-block'}
+style_up={'text-align':'center','width':'250px','display':'inline-block'}
 
 
 
@@ -380,7 +380,7 @@ app.layout=html.Div([
                   style=style_span),
 
               
-                html.H4(str(df_group['Active'].sum()),style={'color':'white'}),
+                html.H3(str(df_group['Active'].sum()),style={'color':'white'}),
 
 
               
@@ -392,7 +392,7 @@ app.layout=html.Div([
                   style=style_span),
 
               
-                html.H4(str(df_group['Confirmed'].sum()),style={'color':'white'}),
+                html.H3(str(df_group['Confirmed'].sum()),style={'color':'white'}),
 
 
               ],style=style_up,className="panel-heading"),
@@ -402,7 +402,7 @@ app.layout=html.Div([
               html.H2('Recovered Cases',className="panel-title",
                   style=style_span),
 
-                html.H4(str(df_group['Recovered'].sum()),style={'color':'white'}),
+                html.H3(str(df_group['Recovered'].sum()),style={'color':'white'}),
 
 
               ],style=style_up,className="panel-heading"),
@@ -414,7 +414,7 @@ app.layout=html.Div([
               html.H2('Deaths ',className="panel-title",
                   style=style_span),
 
-                html.H4(str(df_group['Deaths'].sum()),style={'color':'white'}),
+                html.H3(str(df_group['Deaths'].sum()),style={'color':'white'}),
 
                 ],style=style_up,className="panel-heading"),
 
@@ -581,12 +581,12 @@ app.layout=html.Div([
     html.Div([
 
             html.Div([
-              html.Span('Created By:',className="panel-title",
+              html.H2('Created By:',className="panel-title",
                   style={'font-size':'25px','text-transform':'uppercase','font-weight':'normal','color':'white'}),
 
               
-                html.H4('Ramakant Shakya',style={'color':'white'}),
-                html.H4('(Data Science Enthusiast)',style={'color':'white'}),
+                html.H3('Ramakant Shakya',style={'color':'white'}),
+                html.H3('(Data Science Enthusiast)',style={'color':'white'}),
                 
 
 
@@ -594,15 +594,15 @@ app.layout=html.Div([
 
 
             html.Div([
-              html.Span('Linkedin',className="panel-title",
+              html.H2('Linkedin',className="panel-title",
                   style={'font-size':'25px','text-transform':'uppercase','font-weight':'normal','color':'white'}),
 
               
 
-                html.H4(html.A("Linkedin Profile", href='https://www.linkedin.com/in/ramakantshakya/', target="_blank",
+                html.H3(html.A("Linkedin Profile", href='https://www.linkedin.com/in/ramakantshakya/', target="_blank",
                   style={'color':'white'})
                   ,),
-                html.H4(html.A("Github Profile", href='https://github.com/shakya2417', target="_blank",
+                html.H3(html.A("Github Profile", href='https://github.com/shakya2417', target="_blank",
                   style={'color':'white'})
                   ,),
                 
@@ -614,12 +614,12 @@ app.layout=html.Div([
         
 
             html.Div([
-              html.Span('Any Suggestion',className="panel-title",
+              html.H2('Any Suggestion',className="panel-title",
                   style={'font-size':'25px','text-transform':'uppercase','font-weight':'normal','color':'white'}),
 
               
-                html.H4('Mait at:',style={'color':'white'}),
-                html.H4('ramakantshakya@gmail.com',style={'color':'white'})
+                html.H3('Mait at:',style={'color':'white'}),
+                html.H3('ramakantshakya@gmail.com',style={'color':'white'})
                 
 
 
@@ -629,12 +629,12 @@ app.layout=html.Div([
       
 
             html.Div([
-              html.Span('Last Updated ',className="panel-title",
+              html.H2('Last Updated ',className="panel-title",
                   style={'font-size':'25px','text-transform':'uppercase','font-weight':'normal','color':'white'}),
 
               
-                html.H4(str(df['Last_Update'][0])+'(Johns Hopkins)',style={'color':'white','font-size':'20px'}),
-                html.H4('Data: Johns Hopkins University',style={'color':'white','font-size':'20px'})
+                html.H3(str(df['Last_Update'][0])+'(Johns Hopkins)',style={'color':'white','font-size':'20px'}),
+                html.H3('Data: Johns Hopkins University',style={'color':'white','font-size':'20px'})
                 
                   
 
