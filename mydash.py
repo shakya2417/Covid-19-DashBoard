@@ -371,7 +371,6 @@ app.layout=html.Div([
 
         html.H1(' COVID-19 DashBaord', style={'color':'white','font-size':'50px','font-weight':'300',
               'textAlign': 'center', 'margin': '48px 0', 'fontFamily': 'system-ui'}),
-        html.Div([
 
             html.Div([
               html.Span('Active Cases',className="panel-title",
