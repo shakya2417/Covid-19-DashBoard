@@ -3,6 +3,9 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 import plotly.graph_objects as go
+import dash_bootstrap_components as dbc
+external_stylesheets =['https://codepen.io/chriddyp/pen/bWLwgP.css', dbc.themes.BOOTSTRAP]
+
 
 
 import pandas as pd
@@ -349,15 +352,15 @@ style_span={'font-size':'35px','text-transform':'uppercase','font-weight':'norma
 
 style_dropdown={'width': '500px','fontSize' : '20px','padding-left' : '50px'}
 
-style_intro={'text-align':'center','width':'280px','display':'inline-block'}
-style_up={'text-align':'center','width':'280px','display':'inline-block'}
+style_intro={'text-align':'center','width':'300px','display':'inline-block'}
+style_up={'text-align':'center','width':'300px','display':'inline-block'}
 
 
 
 
 
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+#external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server=app.server
