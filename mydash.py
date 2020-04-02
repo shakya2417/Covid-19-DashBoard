@@ -351,8 +351,8 @@ style_span={'font-size':'30px','font-weight':'normal',
 
 style_dropdown={'width': '500px','fontSize' : '20px','padding-left' : '50px'}
 
-style_intro={'text-align':'center','width':'360px','display':'inline-block'}
-style_up={'text-align':'center','width':'360px','display':'inline-block'}
+style_intro={'text-align':'center','width':'340px','display':'inline-block'}
+style_up={'text-align':'center','width':'340px','display':'inline-block'}
 
 
 
@@ -522,13 +522,13 @@ app.layout=html.Div([
 
                         html.H1('Time Series Plot',style=style_tab_heading),
                         html.Div([
-                              html.H3("Search Countries to Comapre with India",style=style_tab_heading),
+                              html.H2("Search Countries to Comapre with India",style=style_tab_heading),
                                   dcc.Dropdown(id = 'opt3', options = options3,
                                               value = 'India')
                                       ], style = style_dropdown),
                           dcc.Graph(id = 'plot3', figure = fig3),
                            
-                              html.H5("Slide here to Change Time Period",style=style_tab_heading),
+                              html.H2("Slide here to Change Time Period",style=style_tab_heading),
                               # range slider
                               html.Div([
                                 dcc.RangeSlider(id = 'slider3',
