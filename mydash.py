@@ -380,9 +380,6 @@ app.layout=html.Div([
               
                 html.H4(str(df_group['Active'].sum()),style={'color':'white'}),
 
-
-              ],style={'text-align':'center'},className="panel-heading"),
-
               ],style=style_up),
         
 
