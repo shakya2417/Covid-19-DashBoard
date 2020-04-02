@@ -5,7 +5,6 @@ from dash.dependencies import Input, Output
 import plotly.graph_objects as go
 
 
-
 import pandas as pd
 import numpy as np
 
@@ -350,8 +349,8 @@ style_span={'font-size':'35px','text-transform':'uppercase','font-weight':'norma
 
 style_dropdown={'width': '500px','fontSize' : '20px','padding-left' : '50px'}
 
-style_intro={'text-align':'center','width':'300px','display':'inline-block'}
-style_up={'text-align':'center','width':'300px','display':'inline-block'}
+style_intro={'text-align':'center','display':'inline-block'}
+style_up={'text-align':'center','display':'inline-block'}
 
 
 
@@ -379,7 +378,7 @@ app.layout=html.Div([
                   style=style_span),
 
               
-                html.H4(str(df_group['Active'].sum()),style={'color':'white','font-size':'30px'}),
+                html.H4(str(df_group['Active'].sum()),style={'color':'white'}),
 
 
               ],style={'text-align':'center'},className="panel-heading"),
@@ -392,7 +391,7 @@ app.layout=html.Div([
                   style=style_span),
 
               
-                html.H4(str(df_group['Confirmed'].sum()),style={'color':'white','font-size':'30px'}),
+                html.H4(str(df_group['Confirmed'].sum()),style={'color':'white'}),
 
 
               ],style=style_up,className="panel-heading"),
@@ -402,7 +401,7 @@ app.layout=html.Div([
               html.Span('Recovered Cases',className="panel-title",
                   style=style_span),
 
-                html.H4(str(df_group['Recovered'].sum()),style={'color':'white','font-size':'30px'}),
+                html.H4(str(df_group['Recovered'].sum()),style={'color':'white'}),
 
 
               ],style=style_up,className="panel-heading"),
@@ -414,7 +413,7 @@ app.layout=html.Div([
               html.Span('Deaths ',className="panel-title",
                   style=style_span),
 
-                html.H4(str(df_group['Deaths'].sum()),style={'color':'white','font-size':'30px'}),
+                html.H4(str(df_group['Deaths'].sum()),style={'color':'white'}),
 
                 ],style=style_up,className="panel-heading"),
 
@@ -585,8 +584,8 @@ app.layout=html.Div([
                   style={'font-size':'25px','text-transform':'uppercase','font-weight':'normal','color':'white'}),
 
               
-                html.H4('Ramakant Shakya',style={'color':'white','font-size':'20px'}),
-                html.H4('(Data Science Enthusiast)',style={'color':'white','font-size':'20px'}),
+                html.H4('Ramakant Shakya',style={'color':'white'}),
+                html.H4('(Data Science Enthusiast)',style={'color':'white'}),
                 
 
 
@@ -600,10 +599,10 @@ app.layout=html.Div([
               
 
                 html.H4(html.A("Linkedin Profile", href='https://www.linkedin.com/in/ramakantshakya/', target="_blank",
-                  style={'color':'white','font-size':'20px'})
+                  style={'color':'white'})
                   ,),
                 html.H4(html.A("Github Profile", href='https://github.com/shakya2417', target="_blank",
-                  style={'color':'white','font-size':'20px'})
+                  style={'color':'white'})
                   ,),
                 
 
@@ -618,8 +617,8 @@ app.layout=html.Div([
                   style={'font-size':'25px','text-transform':'uppercase','font-weight':'normal','color':'white'}),
 
               
-                html.H4('Mait at:',style={'color':'white','font-size':'20px'}),
-                html.H4('ramakantshakya@gmail.com',style={'color':'white','font-size':'20px'})
+                html.H4('Mait at:',style={'color':'white'}),
+                html.H4('ramakantshakya@gmail.com',style={'color':'white'})
                 
 
 
