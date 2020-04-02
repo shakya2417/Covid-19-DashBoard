@@ -4,8 +4,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 import plotly.graph_objects as go
 import dash_bootstrap_components as dbc
-#external_stylesheets =['https://codepen.io/chriddyp/pen/bWLwgP.css', dbc.themes.BOOTSTRAP]
-
+external_stylesheets =['https://codepen.io/chriddyp/pen/bWLwgP.css', dbc.themes.BOOTSTRAP]
 
 
 import pandas as pd
@@ -347,13 +346,13 @@ style_tab_heading={'color':'white',
                'margin': '48px 0', 
                'fontFamily': 'system-ui',}
 
-style_span={'font-size':'35px','text-transform':'uppercase','font-weight':'normal',
-'color':'white','fontFamily': 'Times New Roman','text-align':'center'}
+style_span={'font-size':'30px','font-weight':'normal',
+'color':'white','fontFamily': 'Times New Roman'}
 
 style_dropdown={'width': '500px','fontSize' : '20px','padding-left' : '50px'}
 
-style_intro={'text-align':'center','width':'330px','display':'inline-block'}
-style_up={'text-align':'center','width':'330px','display':'inline-block'}
+style_intro={'text-align':'center','width':'300px','display':'inline-block'}
+style_up={'text-align':'center','width':'300px','display':'inline-block'}
 
 
 
@@ -362,8 +361,8 @@ style_up={'text-align':'center','width':'330px','display':'inline-block'}
 
 #external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-app = dash.Dash(__name__)
-server=app.server
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+#server=app.server
 app.css.config.serve_locally = True
 app.scripts.config.serve_locally = True
 
@@ -374,19 +373,22 @@ app.layout=html.Div([
 
         html.H1(' COVID-19 DashBaord', style={'color':'white','font-size':'50px','font-weight':'300',
               'textAlign': 'center', 'margin': '48px 0', 'fontFamily': 'system-ui'}),
+        
 
             html.Div([
-              html.Span('Active',className="panel-title",
+              html.H2('Active Cases',className="panel-title",
                   style=style_span),
 
               
                 html.H4(str(df_group['Active'].sum()),style={'color':'white'}),
 
+
+              
               ],style=style_up),
         
 
             html.Div([
-              html.Span('Confirmed',className="panel-title",
+              html.H2('Confirm Cases',className="panel-title",
                   style=style_span),
 
               
@@ -397,7 +399,7 @@ app.layout=html.Div([
         
 
             html.Div([
-              html.Span('Recovered',className="panel-title",
+              html.H2('Recovered Cases',className="panel-title",
                   style=style_span),
 
                 html.H4(str(df_group['Recovered'].sum()),style={'color':'white'}),
@@ -409,7 +411,7 @@ app.layout=html.Div([
         
 
             html.Div([
-              html.Span('Deaths ',className="panel-title",
+              html.H2('Deaths ',className="panel-title",
                   style=style_span),
 
                 html.H4(str(df_group['Deaths'].sum()),style={'color':'white'}),
