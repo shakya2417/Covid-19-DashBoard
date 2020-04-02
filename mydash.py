@@ -345,7 +345,7 @@ style_tab_heading={'color':'white',
                'fontFamily': 'system-ui',}
 
 style_span={'font-size':'35px','text-transform':'uppercase','font-weight':'normal',
-'color':'white','fontFamily': 'Times New Roman'}
+'color':'white','fontFamily': 'Times New Roman','text-align':'center'}
 
 style_dropdown={'width': '500px','fontSize' : '20px','padding-left' : '50px'}
 
