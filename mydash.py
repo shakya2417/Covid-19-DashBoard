@@ -376,7 +376,7 @@ app.layout=html.Div([
               'textAlign': 'center', 'margin': '48px 0', 'fontFamily': 'system-ui'}),
 
             html.Div([
-              html.Span('Active Cases',className="panel-title",
+              html.Span('Active',className="panel-title",
                   style=style_span),
 
               
@@ -386,7 +386,7 @@ app.layout=html.Div([
         
 
             html.Div([
-              html.Span('Confirm Cases',className="panel-title",
+              html.Span('Confirmed',className="panel-title",
                   style=style_span),
 
               
@@ -397,7 +397,7 @@ app.layout=html.Div([
         
 
             html.Div([
-              html.Span('Recovered Cases',className="panel-title",
+              html.Span('Recovered',className="panel-title",
                   style=style_span),
 
                 html.H4(str(df_group['Recovered'].sum()),style={'color':'white'}),
