@@ -351,8 +351,8 @@ style_span={'font-size':'30px','font-weight':'normal',
 
 style_dropdown={'width': '500px','fontSize' : '20px','padding-left' : '50px'}
 
-style_intro={'text-align':'center','width':'220px','display':'inline-block'}
-style_up={'text-align':'center','width':'220px','display':'inline-block'}
+style_intro={'text-align':'center','width':'300px','display':'inline-block'}
+style_up={'text-align':'center','width':'300px','display':'inline-block'}
 
 
 
@@ -380,7 +380,7 @@ app.layout=html.Div([
                   style=style_span),
 
               
-                html.H3(str(df_group['Active'].sum()),style={'color':'white'}),
+                html.H3(str(df_group['Active'].sum()),style={'color':'white','font-size':'15px'}),
 
 
               
@@ -392,7 +392,7 @@ app.layout=html.Div([
                   style=style_span),
 
               
-                html.H3(str(df_group['Confirmed'].sum()),style={'color':'white'}),
+                html.H3(str(df_group['Confirmed'].sum()),style={'color':'white','font-size':'15px'}),
 
 
               ],style=style_up,className="panel-heading"),
@@ -402,7 +402,7 @@ app.layout=html.Div([
               html.H2('Recovered Cases',className="panel-title",
                   style=style_span),
 
-                html.H3(str(df_group['Recovered'].sum()),style={'color':'white'}),
+                html.H3(str(df_group['Recovered'].sum()),style={'color':'white','font-size':'15px'}),
 
 
               ],style=style_up,className="panel-heading"),
@@ -414,7 +414,7 @@ app.layout=html.Div([
               html.H2('Deaths ',className="panel-title",
                   style=style_span),
 
-                html.H3(str(df_group['Deaths'].sum()),style={'color':'white'}),
+                html.H3(str(df_group['Deaths'].sum()),style={'color':'white','font-size':'15px'}),
 
                 ],style=style_up,className="panel-heading"),
 
