@@ -374,49 +374,52 @@ app.layout=html.Div([
         html.H1(' COVID-19 DashBaord', style={'color':'white','font-size':'50px','font-weight':'300',
               'textAlign': 'center', 'margin': '48px 0', 'fontFamily': 'system-ui'}),
         
+          dbc.Row([
+              dbc.Col(
+                html.Div([
+                  html.H2('Active Cases',className="panel-title",
+                      style=style_span),
 
-            html.Div([
-              html.H2('Active Cases',className="panel-title",
-                  style=style_span),
+                  
+                    html.H3(str(df_group['Active'].sum()),style={'color':'white','font-size':'15px'}),
+
+
+                  
+                  ],style=style_up),),
+        
+              dbc.Col(
+                html.Div([
+                  html.H2('Confirm Cases',className="panel-title",
+                      style=style_span),
+
+                  
+                    html.H3(str(df_group['Confirmed'].sum()),style={'color':'white','font-size':'15px'}),
+
+
+                  ],style=style_up,className="panel-heading"),),
+        
+              dbc.Col(   
+                html.Div([
+                  html.H2('Recovered Cases',className="panel-title",
+                      style=style_span),
+
+                    html.H3(str(df_group['Recovered'].sum()),style={'color':'white','font-size':'15px'}),
+
+
+                  ],style=style_up,className="panel-heading"),),
 
               
-                html.H3(str(df_group['Active'].sum()),style={'color':'white','font-size':'15px'}),
-
-
-              
-              ],style=style_up),
         
 
-            html.Div([
-              html.H2('Confirm Cases',className="panel-title",
-                  style=style_span),
+              dbc.Col(
+                html.Div([
+                  html.H2('Deaths ',className="panel-title",
+                      style=style_span),
 
-              
-                html.H3(str(df_group['Confirmed'].sum()),style={'color':'white','font-size':'15px'}),
+                    html.H3(str(df_group['Deaths'].sum()),style={'color':'white','font-size':'15px'}),
 
-
-              ],style=style_up,className="panel-heading"),
-        
-
-            html.Div([
-              html.H2('Recovered Cases',className="panel-title",
-                  style=style_span),
-
-                html.H3(str(df_group['Recovered'].sum()),style={'color':'white','font-size':'15px'}),
-
-
-              ],style=style_up,className="panel-heading"),
-
-              
-        
-
-            html.Div([
-              html.H2('Deaths ',className="panel-title",
-                  style=style_span),
-
-                html.H3(str(df_group['Deaths'].sum()),style={'color':'white','font-size':'15px'}),
-
-                ],style=style_up,className="panel-heading"),
+                    ],style=style_up,className="panel-heading"),),
+              ]),
 
               
             ],#last one
