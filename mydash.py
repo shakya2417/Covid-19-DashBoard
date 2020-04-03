@@ -411,7 +411,7 @@ app.layout=html.Div([
               ],style=style_up,className="panel-heading"),),
 
               
-            dbc.COl(
+            dbc.Col(
 
             html.Div([
               html.Span('Deaths ',className="panel-title",
