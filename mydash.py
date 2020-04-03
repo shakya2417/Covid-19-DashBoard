@@ -346,13 +346,13 @@ style_tab_heading={'color':'white',
                'margin': '48px 0', 
                'fontFamily': 'system-ui',}
 
-style_span={'font-size':'30px','font-weight':'normal',
+style_span={'font-size':'35px','font-weight':'normal',
 'color':'white','fontFamily': 'Times New Roman'}
 
 style_dropdown={'width': '500px','fontSize' : '20px','padding-left' : '50px'}
 
-style_intro={'text-align':'center','width':'340px','display':'inline-block'}
-style_up={'text-align':'center','width':'340px','display':'inline-block'}
+style_intro={'text-align':'center','width':'300px','display':'inline-block'}
+style_up={'text-align':'center','width':'300px','display':'inline-block'}
 
 
 
@@ -362,7 +362,7 @@ style_up={'text-align':'center','width':'340px','display':'inline-block'}
 #external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-server=app.server
+#server=app.server
 app.css.config.serve_locally = True
 app.scripts.config.serve_locally = True
 
@@ -374,52 +374,49 @@ app.layout=html.Div([
         html.H1(' COVID-19 DashBaord', style={'color':'white','font-size':'50px','font-weight':'300',
               'textAlign': 'center', 'margin': '48px 0', 'fontFamily': 'system-ui'}),
         
-          dbc.Row([
-              dbc.Col(
-                html.Div([
-                  html.H2('Active Cases',className="panel-title",
-                      style=style_span),
 
-                  
-                    html.H3(str(df_group['Active'].sum()),style={'color':'white','font-size':'15px'}),
+            html.Div([
+              html.Span('Active Cases',className="panel-title",
+                  style=style_span),
+
+              
+                html.H4(str(df_group['Active'].sum()),style={'color':'white'}),
 
 
-                  
-                  ],style=style_up),),
+              
+              ],style=style_up),
         
-              dbc.Col(
-                html.Div([
-                  html.H2('Confirm Cases',className="panel-title",
-                      style=style_span),
 
-                  
-                    html.H3(str(df_group['Confirmed'].sum()),style={'color':'white','font-size':'15px'}),
+            html.Div([
+              html.Span('Confirm Cases',className="panel-title",
+                  style=style_span),
+
+              
+                html.H4(str(df_group['Confirmed'].sum()),style={'color':'white'}),
 
 
-                  ],style=style_up,className="panel-heading"),),
+              ],style=style_up,className="panel-heading"),
         
-              dbc.Col(   
-                html.Div([
-                  html.H2('Recovered Cases',className="panel-title",
-                      style=style_span),
 
-                    html.H3(str(df_group['Recovered'].sum()),style={'color':'white','font-size':'15px'}),
+            html.Div([
+              html.Span('Recovered Cases',className="panel-title",
+                  style=style_span),
+
+                html.H4(str(df_group['Recovered'].sum()),style={'color':'white'}),
 
 
-                  ],style=style_up,className="panel-heading"),),
+              ],style=style_up,className="panel-heading"),
 
               
         
 
-              dbc.Col(
-                html.Div([
-                  html.H2('Deaths ',className="panel-title",
-                      style=style_span),
+            html.Div([
+              html.Span('Deaths ',className="panel-title",
+                  style=style_span),
 
-                    html.H3(str(df_group['Deaths'].sum()),style={'color':'white','font-size':'15px'}),
+                html.H4(str(df_group['Deaths'].sum()),style={'color':'white'}),
 
-                    ],style=style_up,className="panel-heading"),),
-              ]),
+                ],style=style_up,className="panel-heading"),
 
               
             ],#last one
@@ -525,13 +522,13 @@ app.layout=html.Div([
 
                         html.H1('Time Series Plot',style=style_tab_heading),
                         html.Div([
-                              html.H2("Search Countries to Comapre with India",style=style_tab_heading),
+                              html.H3("Search Countries to Comapre with India",style=style_tab_heading),
                                   dcc.Dropdown(id = 'opt3', options = options3,
                                               value = 'India')
                                       ], style = style_dropdown),
                           dcc.Graph(id = 'plot3', figure = fig3),
                            
-                              html.H2("Slide here to Change Time Period",style=style_tab_heading),
+                              html.H5("Slide here to Change Time Period",style=style_tab_heading),
                               # range slider
                               html.Div([
                                 dcc.RangeSlider(id = 'slider3',
@@ -584,12 +581,12 @@ app.layout=html.Div([
     html.Div([
 
             html.Div([
-              html.H2('Created By:',className="panel-title",
+              html.Span('Created By:',className="panel-title",
                   style={'font-size':'25px','text-transform':'uppercase','font-weight':'normal','color':'white'}),
 
               
-                html.H3('Ramakant Shakya',style={'color':'white'}),
-                html.H3('(Data Science Enthusiast)',style={'color':'white'}),
+                html.H4('Ramakant Shakya',style={'color':'white'}),
+                html.H4('(Data Science Enthusiast)',style={'color':'white'}),
                 
 
 
@@ -597,15 +594,15 @@ app.layout=html.Div([
 
 
             html.Div([
-              html.H2('Linkedin',className="panel-title",
+              html.Span('Linkedin',className="panel-title",
                   style={'font-size':'25px','text-transform':'uppercase','font-weight':'normal','color':'white'}),
 
               
 
-                html.H3(html.A("Linkedin Profile", href='https://www.linkedin.com/in/ramakantshakya/', target="_blank",
+                html.H4(html.A("Linkedin Profile", href='https://www.linkedin.com/in/ramakantshakya/', target="_blank",
                   style={'color':'white'})
                   ,),
-                html.H3(html.A("Github Profile", href='https://github.com/shakya2417', target="_blank",
+                html.H4(html.A("Github Profile", href='https://github.com/shakya2417', target="_blank",
                   style={'color':'white'})
                   ,),
                 
@@ -617,12 +614,12 @@ app.layout=html.Div([
         
 
             html.Div([
-              html.H2('Any Suggestion',className="panel-title",
+              html.Span('Any Suggestion',className="panel-title",
                   style={'font-size':'25px','text-transform':'uppercase','font-weight':'normal','color':'white'}),
 
               
-                html.H3('Mait at:',style={'color':'white'}),
-                html.H3('ramakantshakya@gmail.com',style={'color':'white'})
+                html.H4('Mait at:',style={'color':'white'}),
+                html.H4('ramakantshakya@gmail.com',style={'color':'white'})
                 
 
 
@@ -632,12 +629,12 @@ app.layout=html.Div([
       
 
             html.Div([
-              html.H2('Last Updated ',className="panel-title",
+              html.Span('Last Updated ',className="panel-title",
                   style={'font-size':'25px','text-transform':'uppercase','font-weight':'normal','color':'white'}),
 
               
-                html.H3(str(df['Last_Update'][0])+'(Johns Hopkins)',style={'color':'white','font-size':'20px'}),
-                html.H3('Data: Johns Hopkins University',style={'color':'white','font-size':'20px'})
+                html.H4(str(df['Last_Update'][0])+'(Johns Hopkins)',style={'color':'white','font-size':'20px'}),
+                html.H4('Data: Johns Hopkins University',style={'color':'white','font-size':'20px'})
                 
                   
 
