@@ -632,7 +632,7 @@ app.layout=html.Div([
                       style={'font-size':'25px','font-weight':'normal','color':'white'}),
 
                   
-                    html.H2('Mait at:',style={'color':'white'}),
+                    html.H2('Mail at:',style={'color':'white'}),
                     html.H2('ramakantshakya@gmail.com',style={'color':'white'})
                     
 
