@@ -10,6 +10,7 @@ external_stylesheets =['https://codepen.io/chriddyp/pen/bWLwgP.css', dbc.themes.
 import pandas as pd
 import numpy as np
 
+#importing time series data
 ts_death=pd.read_csv('https://github.com/CSSEGISandData/COVID-19/raw/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv')
 ts_recovered=pd.read_csv('https://github.com/CSSEGISandData/COVID-19/raw/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv')
 ts_confirm=pd.read_csv('https://github.com/CSSEGISandData/COVID-19/raw/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv')
@@ -94,7 +95,7 @@ for country in s3.columns.values[1:]:
 
 
 
-
+#ime series plot
 trace_11=(go.Scatter(x=s1['Date'],y=s1['India'],
             name='India',line=dict(width = 2,
                                     color = 'rgb(229, 151, 50)'),opacity=0.8))
@@ -117,7 +118,7 @@ fig3=go.Figure(data = [trace_33],layout = layout_line)
 
 
 
-######mapbox Data
+
 ##setting date for url
 import pytz
 from datetime import date, timedelta
@@ -127,7 +128,7 @@ tz_India = pytz.timezone('Asia/Kolkata')
 dat=(datetime.now(tz_India)-timedelta(days=1)).strftime('%m-%d-%y')
 dat=str(dat)+'20'
 
-
+#Reading data again
 df=pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/'+dat+'.csv')
 
 
@@ -214,8 +215,8 @@ df_group=df.groupby('Country_Region',as_index=False).sum()
 
 
 
-##confirm Bar
-import plotly.graph_objs as go
+## Bar plots
+#confirm bar
 threshold1=int(df_group[df_group['Country_Region']=='India']['Confirmed'].values)
 df_con_bar=df_group[df_group['Confirmed']>=threshold1]
 trace_con = go.Bar(
@@ -377,6 +378,8 @@ app.layout=html.Div([
             
                 html.H1(' COVID-19 DashBaord', style={'color':'white','font-size':'50px','font-weight':'300',
               'textAlign': 'center', 'margin': '48px 0', 'fontFamily': 'system-ui'}),
+                html.H5('Last Updated:'+str(df['Last_Update'][0]), style={'color':'white','font-weight':'300',
+              'text-align': 'right','position':'top','margin': '48px 0', 'fontFamily': 'system-ui'}),
                 
         
         dbc.Row([
@@ -644,7 +647,7 @@ app.layout=html.Div([
                       style={'font-size':'25px','font-weight':'normal','color':'white'}),
 
                   
-                    html.H2(str(df['Last_Update'][0])+'(Johns Hopkins)',style={'color':'white','font-size':'20px'}),
+                    html.H2(str(df['Last_Update'][0]),style={'color':'white','font-size':'20px'}),
                     html.H2('Data: Johns Hopkins University',style={'color':'white','font-size':'20px'})
                     
                       
