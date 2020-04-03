@@ -4,7 +4,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 import plotly.graph_objects as go
 import dash_bootstrap_components as dbc
-external_stylesheets =['https://codepen.io/chriddyp/pen/bWLwgP.css', dbc.themes.BOOTSTRAP]
+#external_stylesheets =['https://codepen.io/chriddyp/pen/bWLwgP.css', dbc.themes.BOOTSTRAP]
 
 
 import pandas as pd
@@ -359,7 +359,7 @@ style_up={'text-align':'center','width':'300px','display':'inline-block'}
 
 
 
-#external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server=app.server
@@ -370,11 +370,14 @@ app.scripts.config.serve_locally = True
 app.layout=html.Div([
     html.Div([
 
-
-        html.H1(' COVID-19 DashBaord', style={'color':'white','font-size':'50px','font-weight':'300',
+            
+                html.H1(' COVID-19 DashBaord', style={'color':'white','font-size':'50px','font-weight':'300',
               'textAlign': 'center', 'margin': '48px 0', 'fontFamily': 'system-ui'}),
+                
         
+        dbc.Row([
 
+          dbc.Col(
             html.Div([
               html.Span('Active Cases',className="panel-title",
                   style=style_span),
@@ -384,19 +387,19 @@ app.layout=html.Div([
 
 
               
-              ],style=style_up),
+              ],style=style_up),),
         
-
+          dbc.Col(
             html.Div([
               html.Span('Confirm Cases',className="panel-title",
                   style=style_span),
-
               
                 html.H4(str(df_group['Confirmed'].sum()),style={'color':'white'}),
 
 
-              ],style=style_up,className="panel-heading"),
+              ],style=style_up,className="panel-heading"),),
         
+          dbc.Col(
 
             html.Div([
               html.Span('Recovered Cases',className="panel-title",
@@ -405,10 +408,10 @@ app.layout=html.Div([
                 html.H4(str(df_group['Recovered'].sum()),style={'color':'white'}),
 
 
-              ],style=style_up,className="panel-heading"),
+              ],style=style_up,className="panel-heading"),),
 
               
-        
+            dbc.COl(
 
             html.Div([
               html.Span('Deaths ',className="panel-title",
@@ -416,7 +419,8 @@ app.layout=html.Div([
 
                 html.H4(str(df_group['Deaths'].sum()),style={'color':'white'}),
 
-                ],style=style_up,className="panel-heading"),
+                ],style=style_up,className="panel-heading"),),
+            ]),
 
               
             ],#last one
@@ -582,7 +586,7 @@ app.layout=html.Div([
 
             html.Div([
               html.Span('Created By:',className="panel-title",
-                  style={'font-size':'25px','text-transform':'uppercase','font-weight':'normal','color':'white'}),
+                  style={'font-size':'25px','font-weight':'normal','color':'white'}),
 
               
                 html.H4('Ramakant Shakya',style={'color':'white'}),
@@ -595,7 +599,7 @@ app.layout=html.Div([
 
             html.Div([
               html.Span('Linkedin',className="panel-title",
-                  style={'font-size':'25px','text-transform':'uppercase','font-weight':'normal','color':'white'}),
+                  style={'font-size':'25px','font-weight':'normal','color':'white'}),
 
               
 
@@ -615,7 +619,7 @@ app.layout=html.Div([
 
             html.Div([
               html.Span('Any Suggestion',className="panel-title",
-                  style={'font-size':'25px','text-transform':'uppercase','font-weight':'normal','color':'white'}),
+                  style={'font-size':'25px','font-weight':'normal','color':'white'}),
 
               
                 html.H4('Mait at:',style={'color':'white'}),
@@ -630,7 +634,7 @@ app.layout=html.Div([
 
             html.Div([
               html.Span('Last Updated ',className="panel-title",
-                  style={'font-size':'25px','text-transform':'uppercase','font-weight':'normal','color':'white'}),
+                  style={'font-size':'25px','font-weight':'normal','color':'white'}),
 
               
                 html.H4(str(df['Last_Update'][0])+'(Johns Hopkins)',style={'color':'white','font-size':'20px'}),
