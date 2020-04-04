@@ -244,9 +244,9 @@ layout_bar=go.Layout(height = 500,
 threshold2=int(df_group[df_group['Country_Region']=='India']['Active'].values)
 df_con_bar=df_group[df_group['Confirmed']>=threshold2]
 trace_act = go.Bar(
-    x=df_con_bar['Country_Region'],  # NOC stands for National Olympic Committee
+    x=df_con_bar['Country_Region'], 
     y=df_con_bar['Active'],
-    marker=dict(color=df_con_bar['Active']) # set the marker color to gold
+    marker=dict(color=df_con_bar['Active']) 
 ,text=df_con_bar['Active'],textposition='outside',hovertext='<b>'+df_con_bar['Country_Region']+'</b><br>Active Cases:'+df_con_bar['Active'].apply(str),
 hovertemplate=
         "%{hovertext}<br>"+
@@ -258,9 +258,9 @@ hovertemplate=
 threshold3=int(df_group[df_group['Country_Region']=='India']['Recovered'].values)
 df_con_bar=df_group[df_group['Recovered']>=threshold3]
 trace_rec = go.Bar(
-    x=df_con_bar['Country_Region'],  # NOC stands for National Olympic Committee
+    x=df_con_bar['Country_Region'], 
     y=df_con_bar['Recovered'],
-    marker=dict(color=df_con_bar['Recovered']) # set the marker color to gold
+    marker=dict(color=df_con_bar['Recovered']) 
 ,text=df_con_bar['Recovered'],textposition='outside',hovertext='<b>'+df_con_bar['Country_Region']+'</b><br>Recovered Cases:'+df_con_bar['Recovered'].apply(str),
 hovertemplate=
         "%{hovertext}<br>"+
@@ -272,9 +272,9 @@ hovertemplate=
 threshold4=int(df_group[df_group['Country_Region']=='India']['Deaths'].values)
 df_con_bar=df_group[df_group['Deaths']>=threshold4]
 trace_d = go.Bar(
-    x=df_con_bar['Country_Region'],  # NOC stands for National Olympic Committee
+    x=df_con_bar['Country_Region'], 
     y=df_con_bar['Deaths'],
-    marker=dict(color=df_con_bar['Deaths']) # set the marker color to gold
+    marker=dict(color=df_con_bar['Deaths']) 
 ,text=df_con_bar['Deaths'],textposition='outside',hovertext='<b>'+df_con_bar['Country_Region']+'</b><br>Deaths Cases:'+df_con_bar['Deaths'].apply(str),
 hovertemplate=
         "%{hovertext}<br>"+
@@ -451,14 +451,11 @@ app.layout=html.Div([
                           dcc.Graph(id='Confirmed_bar',
                             figure={'data':[trace_con],'layout':layout_bar}
                           ),
-                        html.H1('Pie Chart of Confirmed Cases Worldwide',style=style_tab_heading),
-                          dcc.Graph(id='Confirmed_Pie',
-                            figure={'data':[pie_con],'layout':layout_pie}
-                          ),
+
                     #line charts
                         html.H1('Time Series Plot',style=style_tab_heading),
                         html.Div([
-                                  html.H2("Search Countries to Comapre with India",style=style_tab_heading),
+                                  html.H2("Search Countries to Compare with India",style=style_tab_heading),
                                   dcc.Dropdown(id = 'opt1', options = options1,
                                               value = 'India')
                                       ], style = style_dropdown),
@@ -476,7 +473,12 @@ app.layout=html.Div([
                                       ], style = {'width' : '80%',
                                                   'fontSize' : '20px',
                                                   'padding-left' : '100px',
-                                                  'display': 'inline-block'})
+                                                  'display': 'inline-block'}),
+                          #pie chart
+                        html.H1('Pie Chart of Confirmed Cases Worldwide',style=style_tab_heading),
+                          dcc.Graph(id='Confirmed_Pie',
+                            figure={'data':[pie_con],'layout':layout_pie}
+                          ),
 
 
                      ]),
@@ -489,12 +491,10 @@ app.layout=html.Div([
                           dcc.Graph(id='Recovered_bar',
                             figure={'data':[trace_rec],'layout':layout_bar}
                           ),
-                        html.H1('Pie Chart of Recovered Cases Worldwide',style=style_tab_heading),
-                          dcc.Graph(id='Recovered_Pie',
-                            figure={'data':[pie_rec],'layout':layout_pie}),
+                        
                         html.H1('Time Series Plot',style=style_tab_heading),
                         html.Div([
-                              html.H3("Search Countries to Comapre with India",style=style_tab_heading),
+                              html.H3("Search Countries to Compare with India",style=style_tab_heading),
                               dcc.Dropdown(id = 'opt2', options = options2,
                                           value = 'India')
                                   ], style = style_dropdown),
@@ -512,7 +512,10 @@ app.layout=html.Div([
                                   ], style = {'width' : '80%',
                                               'fontSize' : '20px',
                                               'padding-left' : '100px',
-                                              'display': 'inline-block'})
+                                              'display': 'inline-block'}),
+                          html.H1('Pie Chart of Recovered Cases Worldwide',style=style_tab_heading),
+                          dcc.Graph(id='Recovered_Pie',
+                            figure={'data':[pie_rec],'layout':layout_pie}),
 
 
 
@@ -526,14 +529,11 @@ app.layout=html.Div([
                           dcc.Graph(id='Deaths_bar',
                             figure={'data':[trace_d],'layout':layout_bar}
                           ),
-                        html.H1('Pie Chart of Deaths Worldwide',style=style_tab_heading),
-                          dcc.Graph(id='Deaths_Pie',
-                            figure={'data':[pie_d],'layout':layout_pie}
-                          ),
+                        
 
                         html.H1('Time Series Plot',style=style_tab_heading),
                         html.Div([
-                              html.H2("Search Countries to Comapre with India",style=style_tab_heading),
+                              html.H2("Search Countries to Compare with India",style=style_tab_heading),
                                   dcc.Dropdown(id = 'opt3', options = options3,
                                               value = 'India')
                                       ], style = style_dropdown),
@@ -551,6 +551,10 @@ app.layout=html.Div([
                                                   'fontSize' : '20px',
                                                   'padding-left' : '100px',
                                                   'display': 'inline-block'}),
+                            html.H1('Pie Chart of Deaths Worldwide',style=style_tab_heading),
+                          dcc.Graph(id='Deaths_Pie',
+                            figure={'data':[pie_d],'layout':layout_pie}
+                          ),
                                   
                                   
 
