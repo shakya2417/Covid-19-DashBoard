@@ -131,6 +131,11 @@ dat=str(dat)+'20'
 #Reading data again
 df=pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/'+dat+'.csv')
 
+def active(data):
+  for i in range(len(data)):
+    data['Active'][i]=data['Confirmed'][i]-data['Recovered'][i]-data['Deaths'][i]
+
+active(df)
 
 def cases(val):
   if val==0:
@@ -170,6 +175,7 @@ def cases(val):
 
 df['mar_size']=df['Confirmed'].apply(cases)
 
+
 #mapbox ploting start here..
 data=go.Scattermapbox(lon = df['Long_'],lat = df['Lat'],
         
@@ -203,11 +209,7 @@ layout=dict(height = 600,
 
 # tabs data start here.
 df.drop(['Lat','Long_','FIPS'],axis=1,inplace=True)
-def active(data):
-  for i in range(len(data)):
-    data['Active'][i]=data['Confirmed'][i]-data['Recovered'][i]-data['Deaths'][i]
 
-active(df)
 
 df_group=df.groupby('Country_Region',as_index=False).sum()
 
