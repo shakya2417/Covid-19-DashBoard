@@ -312,7 +312,7 @@ trace_con = go.Bar(
     x=df_State['Province_State'], 
     y=df_State['Confirmed'],
     marker=dict(color=df_State['Confirmed']) 
-,text=df_State['Confirmed'],textposition='outside',hovertext='<b>'+df_State['Province_State']+'</b><br>Recovered Cases:'+df_State['Confirmed'].apply(str),
+,text=df_State['Confirmed'],textposition='outside',hovertext='<b>'+df_State['Province_State']+'</b><br>Confirmed Cases:'+df_State['Confirmed'].apply(str),
 hovertemplate=
         "%{hovertext}<br>"+
         "<extra></extra>")
@@ -336,7 +336,7 @@ trace_act = go.Bar(
     x=df_State['Province_State'], 
     y=df_State['Active'],
     marker=dict(color=df_State['Active']) 
-,text=df_State['Active'],textposition='outside',hovertext='<b>'+df_State['Province_State']+'</b><br>Recovered Cases:'+df_State['Active'].apply(str),
+,text=df_State['Active'],textposition='outside',hovertext='<b>'+df_State['Province_State']+'</b><br>Active Cases:'+df_State['Active'].apply(str),
 hovertemplate=
         "%{hovertext}<br>"+
         "<extra></extra>")
@@ -358,13 +358,11 @@ hovertemplate=
 
 
 #Deaths bar
-threshold4=int(df_group[df_group['Country_Region']=='India']['Deaths'].values)
-df_con_bar=df_group[df_group['Deaths']>=threshold4]
 trace_d = go.Bar(
-    x=df_con_bar['Country_Region'], 
-    y=df_con_bar['Deaths'],
-    marker=dict(color=df_con_bar['Deaths']) 
-,text=df_con_bar['Deaths'],textposition='outside',hovertext='<b>'+df_con_bar['Country_Region']+'</b><br>Deaths Cases:'+df_con_bar['Deaths'].apply(str),
+    x=df_State['Province_State'], 
+    y=df_State['Deaths'],
+    marker=dict(color=df_State['Deaths']) 
+,text=df_State['Deaths'],textposition='outside',hovertext='<b>'+df_State['Province_State']+'</b><br>Deaths:'+df_State['Deaths'].apply(str),
 hovertemplate=
         "%{hovertext}<br>"+
         "<extra></extra>")
@@ -392,7 +390,7 @@ layout_pie=go.Layout(height = 500,
 #Pie Recovered
 pie_rec=go.Pie(labels=df_State['Province_State'],
             values=df_State['Recovered'],
-            textposition='inside',hovertext='<b>'+df_State['Province_State']+'</b><br>Confirmed Cases:'+df_State['Recovered'].apply(str),
+            textposition='inside',hovertext='<b>'+df_State['Province_State']+'</b><br>Recovered Cases:'+df_State['Recovered'].apply(str),
 hovertemplate=
         "%{hovertext}<br>"+
         "<extra></extra>")
@@ -400,7 +398,7 @@ hovertemplate=
 #pie Active
 pie_act=go.Pie(labels=df_State['Province_State'],
             values=df_State['Active'],
-            textposition='inside',hovertext='<b>'+df_State['Province_State']+'</b><br>Confirmed Cases:'+df_State['Active'].apply(str),
+            textposition='inside',hovertext='<b>'+df_State['Province_State']+'</b><br>Active Cases:'+df_State['Active'].apply(str),
 hovertemplate=
         "%{hovertext}<br>"+
         "<extra></extra>")
@@ -408,7 +406,7 @@ hovertemplate=
 
 pie_d=go.Pie(labels=df_State['Province_State'],
             values=df_State['Deaths'],
-            textposition='inside',hovertext='<b>'+df_State['Province_State']+'</b><br>Confirmed Cases:'+df_State['Deaths'].apply(str),
+            textposition='inside',hovertext='<b>'+df_State['Province_State']+'</b><br>Deaths :'+df_State['Deaths'].apply(str),
 hovertemplate=
         "%{hovertext}<br>"+
         "<extra></extra>")
