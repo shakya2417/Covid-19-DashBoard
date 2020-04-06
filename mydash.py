@@ -736,12 +736,12 @@ app.layout=html.Div([
                   
               dbc.Col(
                 html.Div([
-                  html.Span('Last Updated ',className="panel-title",
+                  html.Span('Data Source:',className="panel-title",
                       style={'font-size':'25px','font-weight':'normal','color':'white'}),
 
                   
-                    html.H2(last_update,style={'color':'white','font-size':'20px'}),
-                    html.H2('Data: Johns Hopkins University',style={'color':'white','font-size':'20px'})
+                    html.H2('mygov.in',style={'color':'white','font-size':'20px'}),
+                    html.H2('Johns Hopkins University',style={'color':'white','font-size':'20px'})
                     
                       
 
