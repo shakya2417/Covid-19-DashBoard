@@ -477,7 +477,7 @@ app.layout=html.Div([
                   style=style_span),
 
               
-                html.H2(str(df_group['Active'].sum()),style={'color':'white','font-size':'20px'}),
+                html.H2(str(df_State['Active'].sum()),style={'color':'white','font-size':'20px'}),
 
 
               
@@ -488,7 +488,7 @@ app.layout=html.Div([
               html.Span('Confirm Cases',className="panel-title",
                   style=style_span),
               
-                html.H2(str(df_group['Confirmed'].sum()),style={'color':'white','font-size':'20px'}),
+                html.H2(str(df_State['Confirmed'].sum()),style={'color':'white','font-size':'20px'}),
 
 
               ],style=style_up,className="panel-heading"),),
@@ -499,7 +499,7 @@ app.layout=html.Div([
               html.Span('Recovered Cases',className="panel-title",
                   style=style_span),
 
-                html.H2(str(df_group['Recovered'].sum()),style={'color':'white','font-size':'20px'}),
+                html.H2(str(df_State['Recovered'].sum()),style={'color':'white','font-size':'20px'}),
 
 
               ],style=style_up,className="panel-heading"),),
@@ -511,7 +511,7 @@ app.layout=html.Div([
               html.Span('Deaths ',className="panel-title",
                   style=style_span),
 
-                html.H2(str(df_group['Deaths'].sum()),style={'color':'white','font-size':'20px'}),
+                html.H2(str(df_State['Deaths'].sum()),style={'color':'white','font-size':'20px'}),
 
                 ],style=style_up,className="panel-heading"),),
             ]),
