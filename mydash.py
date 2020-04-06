@@ -116,6 +116,80 @@ fig1=go.Figure(data = [trace_11],layout = layout_line)
 fig2=go.Figure(data = [trace_22],layout = layout_line)
 fig3=go.Figure(data = [trace_33],layout = layout_line)
 
+#Scrapping Indian State data
+
+import requests
+
+website_url = requests.get('https://www.mygov.in/corona-data/covid19-statewise-status').text
+
+from bs4 import BeautifulSoup
+soup = BeautifulSoup(website_url,'html.parser')
+
+My_table = soup.find('div',{'class':'field field-name-field-covid-statewise-data field-type-field-collection field-label-above'})
+
+L1=My_table.find_all('div',class_=['field-item even','field-item odd'])
+
+
+last_update=soup.find('div',class_='field-item even').text
+L2=[]
+L3=[]
+
+for i in range(len(L1)):
+  for wrapper in L1[i].find_all('div', {"class":"field-item even"}):
+    L2.append((wrapper.text))
+
+
+for i in range(0,len(L2),4):
+  if i==len(L2):
+    break
+  else:
+    L3.append(L2[i:i+4])
+
+df_State=pd.DataFrame(L3,columns=['Province_State','Confirmed','Recovered','Deaths'])
+
+df_State.drop_duplicates(subset='Province_State',inplace=True)
+
+df_State=df_State.sort_values(by='Province_State')
+
+df_State=df_State.reset_index().drop('index',axis=1)
+
+df_State['Confirmed']=df_State['Confirmed'].apply(int)
+df_State['Recovered']=df_State['Recovered'].apply(int)
+df_State['Deaths']=df_State['Deaths'].apply(int)
+
+
+#Reading State wise Cooordinate file from my repo on github
+df_coor=pd.read_csv('https://raw.githubusercontent.com/shakya2417/Titanic_Survival/master/State_data.txt',sep='\t',error_bad_lines=False)
+df_coor.columns=['Province_State','Lat','Long_']
+
+df_coor['Province_State']=df_coor['Province_State'].apply(lambda x :x.strip())
+
+df_coor=df_coor.sort_values(by='Province_State')
+
+
+
+df_State=df_State.merge(df_coor,how='right')
+
+df_State.fillna(value=0,inplace=True)
+
+df_State['Active']=df_State['Deaths']
+def active(data):
+  for i in range(len(data)):
+    data['Active'][i]=data['Confirmed'][i]-data['Recovered'][i]-data['Deaths'][i]
+
+active(df_State)
+
+df_State['Country_Region']='India'
+
+df_State['Combined_Key']=df_State['Province_State']+', '+df_State['Country_Region']
+#State data ends here
+
+
+
+
+
+
+
 
 
 
@@ -131,6 +205,17 @@ dat=str(dat)+'20'
 #Reading data again
 df=pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/'+dat+'.csv')
 
+
+df.drop(['FIPS','Admin2','Last_Update'],axis=1,inplace=True)
+
+
+df=pd.concat([df,df_State])
+
+df.drop(index=df.index[df['Combined_Key'] == 'India'].tolist()[0],inplace=True)
+
+df=df.reset_index().drop('index',axis=1)
+
+
 def active(data):
   for i in range(len(data)):
     data['Active'][i]=data['Confirmed'][i]-data['Recovered'][i]-data['Deaths'][i]
@@ -141,21 +226,21 @@ def cases(val):
   if val==0:
     return 0.1
   elif val>=1 and val<5:
-    return 4
-  elif val>=5 and val<10:
     return 6
+  elif val>=5 and val<10:
+    return 9
   elif val>=10 and val<25:
-    return 8
+    return 11
   elif val>=25 and val<100:
-    return 10
+    return 14
   elif val>=100 and val<200:
-    return 13
+    return 18
   elif val>=200 and val<500:
-    return 17
+    return 22
   elif val>=500 and val<1000:
-    return 21
-  elif val>=1000 and val<2000:
     return 25
+  elif val>=1000 and val<2000:
+    return 28
   elif val>=2000 and val<5000:
     return 30
   elif val>=5000 and val<20000:
@@ -174,6 +259,10 @@ def cases(val):
     return 65
 
 df['mar_size']=df['Confirmed'].apply(cases)
+df['Confirmed']=df['Confirmed'].astype(int)
+df['Recovered']=df['Recovered'].astype(int)
+df['Active']=df['Active'].astype(int)
+df['Deaths']=df['Deaths'].astype(int)
 
 
 #mapbox ploting start here..
@@ -201,14 +290,14 @@ layout=dict(height = 600,
     margin = dict(t = 0, b = 0, l = 0, r = 0),
     font = dict(color = '#FFFFFF', size = 11),
     paper_bgcolor = '#000000',hovermode='closest',mapbox=dict(accesstoken='pk.eyJ1Ijoic2hha3lhMjQxNyIsImEiOiJjazd6d3A4bHkwOWIxM2ZtdTM1NXV6aWJ5In0.5dpYa-G0a58wpEARZELMyg',
-                                                  bearing=0,center=go.layout.mapbox.Center(lat=33.8,lon=9.5),
-                                                  pitch=5,zoom=2,style ='dark'))
+                                                  bearing=0,center=go.layout.mapbox.Center(lat=22.9,lon=78.6),
+                                                  pitch=5,zoom=2,style ='dark'),worldviews='in')
 #mapbox plotting ends here.
 
 
 
 # tabs data start here.
-df.drop(['Lat','Long_','FIPS'],axis=1,inplace=True)
+df.drop(['Lat','Long_'],axis=1,inplace=True)
 
 
 df_group=df.groupby('Country_Region',as_index=False).sum()
@@ -219,16 +308,15 @@ df_group=df.groupby('Country_Region',as_index=False).sum()
 
 ## Bar plots
 #confirm bar
-threshold1=int(df_group[df_group['Country_Region']=='India']['Confirmed'].values)
-df_con_bar=df_group[df_group['Confirmed']>=threshold1]
 trace_con = go.Bar(
-    x=df_con_bar['Country_Region'],  # NOC stands for National Olympic Committee
-    y=df_con_bar['Confirmed'],
-    marker=dict(color=df_con_bar['Confirmed']) # set the marker color to gold
-,text=df_con_bar['Confirmed'],textposition='outside',hovertext='<b>'+df_con_bar['Country_Region']+'</b><br>Confirmed Cases:'+df_con_bar['Confirmed'].apply(str),
+    x=df_State['Province_State'], 
+    y=df_State['Confirmed'],
+    marker=dict(color=df_State['Confirmed']) 
+,text=df_State['Confirmed'],textposition='outside',hovertext='<b>'+df_State['Province_State']+'</b><br>Recovered Cases:'+df_State['Confirmed'].apply(str),
 hovertemplate=
         "%{hovertext}<br>"+
         "<extra></extra>")
+
 
 layout_bar=go.Layout(height = 500,
   xaxis=dict(fixedrange=True),
@@ -243,30 +331,29 @@ layout_bar=go.Layout(height = 500,
 
 #Active bar
 
-threshold2=int(df_group[df_group['Country_Region']=='India']['Active'].values)
-df_con_bar=df_group[df_group['Confirmed']>=threshold2]
+
 trace_act = go.Bar(
-    x=df_con_bar['Country_Region'], 
-    y=df_con_bar['Active'],
-    marker=dict(color=df_con_bar['Active']) 
-,text=df_con_bar['Active'],textposition='outside',hovertext='<b>'+df_con_bar['Country_Region']+'</b><br>Active Cases:'+df_con_bar['Active'].apply(str),
+    x=df_State['Province_State'], 
+    y=df_State['Active'],
+    marker=dict(color=df_State['Active']) 
+,text=df_State['Active'],textposition='outside',hovertext='<b>'+df_State['Province_State']+'</b><br>Recovered Cases:'+df_State['Active'].apply(str),
 hovertemplate=
         "%{hovertext}<br>"+
         "<extra></extra>")
+
 
 
 
 #Recovered Bar
-threshold3=int(df_group[df_group['Country_Region']=='India']['Recovered'].values)
-df_con_bar=df_group[df_group['Recovered']>=threshold3]
 trace_rec = go.Bar(
-    x=df_con_bar['Country_Region'], 
-    y=df_con_bar['Recovered'],
-    marker=dict(color=df_con_bar['Recovered']) 
-,text=df_con_bar['Recovered'],textposition='outside',hovertext='<b>'+df_con_bar['Country_Region']+'</b><br>Recovered Cases:'+df_con_bar['Recovered'].apply(str),
+    x=df_State['Province_State'], 
+    y=df_State['Recovered'],
+    marker=dict(color=df_State['Recovered']) 
+,text=df_State['Recovered'],textposition='outside',hovertext='<b>'+df_State['Province_State']+'</b><br>Recovered Cases:'+df_State['Recovered'].apply(str),
 hovertemplate=
         "%{hovertext}<br>"+
         "<extra></extra>")
+
 
 
 
@@ -290,9 +377,9 @@ hovertemplate=
 #pie Charts starts here....
 
 #confirmed Pie
-pie_con=go.Pie(labels=df_group['Country_Region'],
-            values=df_group['Confirmed'],
-            textposition='inside',hovertext='<b>'+df_group['Country_Region']+'</b><br>Confirmed Cases:'+df_group['Confirmed'].apply(str),
+pie_con=go.Pie(labels=df_State['Province_State'],
+            values=df_State['Confirmed'],
+            textposition='inside',hovertext='<b>'+df_State['Province_State']+'</b><br>Confirmed Cases:'+df_State['Confirmed'].apply(str),
 hovertemplate=
         "%{hovertext}<br>"+
         "<extra></extra>")
@@ -303,25 +390,25 @@ layout_pie=go.Layout(height = 500,
     )
 
 #Pie Recovered
-pie_rec=go.Pie(labels=df_group['Country_Region'],
-            values=df_group['Recovered'],
-            textposition='inside',hovertext='<b>'+df_group['Country_Region']+'</b><br>Recovered Cases:'+df_group['Recovered'].apply(str),
+pie_rec=go.Pie(labels=df_State['Province_State'],
+            values=df_State['Recovered'],
+            textposition='inside',hovertext='<b>'+df_State['Province_State']+'</b><br>Confirmed Cases:'+df_State['Recovered'].apply(str),
 hovertemplate=
         "%{hovertext}<br>"+
         "<extra></extra>")
 
 #pie Active
-pie_act=go.Pie(labels=df_group['Country_Region'],
-            values=df_group['Active'],
-            textposition='inside',hovertext='<b>'+df_group['Country_Region']+'</b><br>Active Cases:'+df_group['Active'].apply(str),
+pie_act=go.Pie(labels=df_State['Province_State'],
+            values=df_State['Active'],
+            textposition='inside',hovertext='<b>'+df_State['Province_State']+'</b><br>Confirmed Cases:'+df_State['Active'].apply(str),
 hovertemplate=
         "%{hovertext}<br>"+
         "<extra></extra>")
 
 
-pie_d=go.Pie(labels=df_group['Country_Region'],
-            values=df_group['Deaths'],
-            textposition='inside',hovertext='<b>'+df_group['Country_Region']+'</b><br>Deaths Cases:'+df_group['Deaths'].apply(str),
+pie_d=go.Pie(labels=df_State['Province_State'],
+            values=df_State['Deaths'],
+            textposition='inside',hovertext='<b>'+df_State['Province_State']+'</b><br>Confirmed Cases:'+df_State['Deaths'].apply(str),
 hovertemplate=
         "%{hovertext}<br>"+
         "<extra></extra>")
@@ -380,7 +467,7 @@ app.layout=html.Div([
             
                 html.H1(' COVID-19 DashBaord', style={'color':'white','font-size':'50px','font-weight':'300',
               'textAlign': 'center', 'margin': '48px 0', 'fontFamily': 'system-ui'}),
-                html.H3('Last Updated:'+str(df['Last_Update'][0]), style={'color':'white','font-weight':'300',
+                html.H3('Last Updated:'+last_update, style={'color':'white','font-weight':'300',
               'text-align': 'right','position':'top','margin': '48px 0', 'fontFamily': 'system-ui'}),
                 
         
@@ -449,7 +536,7 @@ app.layout=html.Div([
       dcc.Tabs(id="main tab", children=[
               dcc.Tab(label='Total Confirmed', children=[
                      html.Div([
-                        html.H1("Countries with Confirmed Cases Greater than India",style=style_tab_heading),
+                        html.H1("Confirmed Cases in India",style=style_tab_heading),
                           dcc.Graph(id='Confirmed_bar',
                             figure={'data':[trace_con],'layout':layout_bar}
                           ),
@@ -477,7 +564,7 @@ app.layout=html.Div([
                                                   'padding-left' : '100px',
                                                   'display': 'inline-block'}),
                           #pie chart
-                        html.H1('Pie Chart of Confirmed Cases Worldwide',style=style_tab_heading),
+                        html.H1('Pie Chart of Confirmed Cases in India',style=style_tab_heading),
                           dcc.Graph(id='Confirmed_Pie',
                             figure={'data':[pie_con],'layout':layout_pie}
                           ),
@@ -489,7 +576,7 @@ app.layout=html.Div([
                   
                   dcc.Tab(label='Total Recovered', children=[
                      html.Div([
-                        html.H1("Countries with Recovered Cases Greater than India",style=style_tab_heading),
+                        html.H1(" Recovered Cases in India",style=style_tab_heading),
                           dcc.Graph(id='Recovered_bar',
                             figure={'data':[trace_rec],'layout':layout_bar}
                           ),
@@ -515,7 +602,7 @@ app.layout=html.Div([
                                               'fontSize' : '20px',
                                               'padding-left' : '100px',
                                               'display': 'inline-block'}),
-                          html.H1('Pie Chart of Recovered Cases Worldwide',style=style_tab_heading),
+                          html.H1('Pie Chart of Recovered Cases in India',style=style_tab_heading),
                           dcc.Graph(id='Recovered_Pie',
                             figure={'data':[pie_rec],'layout':layout_pie}),
 
@@ -527,7 +614,7 @@ app.layout=html.Div([
 
                   dcc.Tab(label='Total Deaths', children=[
                      html.Div([
-                        html.H1("Countries with Deaths Greater than India",style=style_tab_heading),
+                        html.H1(" Deaths in India",style=style_tab_heading),
                           dcc.Graph(id='Deaths_bar',
                             figure={'data':[trace_d],'layout':layout_bar}
                           ),
@@ -553,7 +640,7 @@ app.layout=html.Div([
                                                   'fontSize' : '20px',
                                                   'padding-left' : '100px',
                                                   'display': 'inline-block'}),
-                            html.H1('Pie Chart of Deaths Worldwide',style=style_tab_heading),
+                            html.H1('Pie Chart of Deaths in India',style=style_tab_heading),
                           dcc.Graph(id='Deaths_Pie',
                             figure={'data':[pie_d],'layout':layout_pie}
                           ),
@@ -566,11 +653,11 @@ app.layout=html.Div([
                   ],style=tab_style, selected_style=tab_selected_style),
                   dcc.Tab(label='Total Active', children=[
                      html.Div([
-                        html.H1("Countries with Active Cases Greater than India ",style=style_tab_heading),
+                        html.H1(" Active Cases in India ",style=style_tab_heading),
                           dcc.Graph(id='Active_bar',
                             figure={'data':[trace_act],'layout':layout_bar}
                           ),
-                        html.H1('Pie Chart of Active Cases Worldwide',style=style_tab_heading),
+                        html.H1('Pie Chart of Active Cases in India',style=style_tab_heading),
                           dcc.Graph(id='Active_Pie',
                             figure={'data':[pie_act],'layout':layout_pie})
                           ])
@@ -588,7 +675,7 @@ app.layout=html.Div([
           'borderBottom': '1px solid #d6d6d6',
           'padding': '4px'},
           parent_style={
-          'maxWidth': '1400px',
+          #'maxWidth': '1400px',
           'margin': '0 auto'}
       ) #tabs End here
 
@@ -653,7 +740,7 @@ app.layout=html.Div([
                       style={'font-size':'25px','font-weight':'normal','color':'white'}),
 
                   
-                    html.H2(str(df['Last_Update'][0]),style={'color':'white','font-size':'20px'}),
+                    html.H2(last_update,style={'color':'white','font-size':'20px'}),
                     html.H2('Data: Johns Hopkins University',style={'color':'white','font-size':'20px'})
                     
                       
