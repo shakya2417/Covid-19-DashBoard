@@ -319,7 +319,7 @@ hovertemplate=
 
 
 layout_bar=go.Layout(height = 500,
-  xaxis=dict(fixedrange=True),
+  xaxis=dict(fixedrange=True,categoryorder='total ascending'),
   yaxis=dict(fixedrange=True),
     margin = dict(t = 0, b = 0, l = 0, r = 0),
     font = dict(color = '#FFFFFF', size = 11),
@@ -477,7 +477,7 @@ app.layout=html.Div([
                   style=style_span),
 
               
-                html.H2(str(df_State['Active'].sum()),style={'color':'white','font-size':'20px'}),
+                html.H2(str(df_State['Active'].apply(int).sum()),style={'color':'white','font-size':'20px'}),
 
 
               
@@ -488,7 +488,7 @@ app.layout=html.Div([
               html.Span('Confirm Cases',className="panel-title",
                   style=style_span),
               
-                html.H2(str(df_State['Confirmed'].sum()),style={'color':'white','font-size':'20px'}),
+                html.H2(str(df_State['Confirmed'].apply(int).sum()),style={'color':'white','font-size':'20px'}),
 
 
               ],style=style_up,className="panel-heading"),),
@@ -499,7 +499,7 @@ app.layout=html.Div([
               html.Span('Recovered Cases',className="panel-title",
                   style=style_span),
 
-                html.H2(str(df_State['Recovered'].sum()),style={'color':'white','font-size':'20px'}),
+                html.H2(str(df_State['Recovered'].apply(int).sum()),style={'color':'white','font-size':'20px'}),
 
 
               ],style=style_up,className="panel-heading"),),
@@ -511,7 +511,7 @@ app.layout=html.Div([
               html.Span('Deaths ',className="panel-title",
                   style=style_span),
 
-                html.H2(str(df_State['Deaths'].sum()),style={'color':'white','font-size':'20px'}),
+                html.H2(str(df_State['Deaths'].apply(int).sum()),style={'color':'white','font-size':'20px'}),
 
                 ],style=style_up,className="panel-heading"),),
             ]),
