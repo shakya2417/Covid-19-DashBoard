@@ -123,7 +123,7 @@ import requests
 website_url = requests.get('https://www.mohfw.gov.in/').text
 
 from bs4 import BeautifulSoup
-soup = BeautifulSoup(website_url,'html.parser')
+soup = BeautifulSoup(website_url,'lxml')
 
 time=soup.find('div',class_='status-update')
 
