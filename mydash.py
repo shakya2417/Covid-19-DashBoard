@@ -120,38 +120,25 @@ fig3=go.Figure(data = [trace_33],layout = layout_line)
 
 import requests
 
-website_url = requests.get('https://www.mygov.in/corona-data/covid19-statewise-status').text
+website_url = requests.get('https://www.mohfw.gov.in/').text
 
 from bs4 import BeautifulSoup
-soup = BeautifulSoup(website_url,'html.parser')
+soup = BeautifulSoup(website_url,'lxml')
 
-My_table = soup.find('div',{'class':'field field-name-field-covid-statewise-data field-type-field-collection field-label-above'})
+time=soup.find('div',class_='status-update')
 
-L1=My_table.find_all('div',class_=['field-item even','field-item odd'])
+last_update=time.find('span').text[7:]
 
+table = soup.find_all('table')
 
-last_update=soup.find('div',class_='field-item even').text
-L2=[]
-L3=[]
+df = pd.read_html(str(table))
 
-for i in range(len(L1)):
-  for wrapper in L1[i].find_all('div', {"class":"field-item even"}):
-    L2.append((wrapper.text))
+df_State=pd.DataFrame(df[0])
 
+df_State.drop('S. No.',axis=1,inplace=True)
 
-for i in range(0,len(L2),4):
-  if i==len(L2):
-    break
-  else:
-    L3.append(L2[i:i+4])
-
-df_State=pd.DataFrame(L3,columns=['Province_State','Confirmed','Recovered','Deaths'])
-
-df_State.drop_duplicates(subset='Province_State',inplace=True)
-
-df_State=df_State.sort_values(by='Province_State')
-
-df_State=df_State.reset_index().drop('index',axis=1)
+df_State=df_State.iloc[0:-2,:]
+df_State.columns=['Province_State','Confirmed','Recovered','Deaths']
 
 df_State['Confirmed']=df_State['Confirmed'].apply(int)
 df_State['Recovered']=df_State['Recovered'].apply(int)
@@ -163,8 +150,6 @@ df_coor=pd.read_csv('https://raw.githubusercontent.com/shakya2417/Titanic_Surviv
 df_coor.columns=['Province_State','Lat','Long_']
 
 df_coor['Province_State']=df_coor['Province_State'].apply(lambda x :x.strip())
-
-df_coor=df_coor.sort_values(by='Province_State')
 
 
 
@@ -738,7 +723,7 @@ app.layout=html.Div([
                       style={'font-size':'25px','font-weight':'normal','color':'white'}),
 
                   
-                    html.H2('mygov.in',style={'color':'white','font-size':'20px'}),
+                    html.H2('https://www.mohfw.gov.in/',style={'color':'white','font-size':'20px'}),
                     html.H2('Johns Hopkins University',style={'color':'white','font-size':'20px'})
                     
                       
