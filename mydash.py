@@ -723,7 +723,7 @@ app.layout=html.Div([
                       style={'font-size':'25px','font-weight':'normal','color':'white'}),
 
                   
-                    html.H2('https://www.mohfw.gov.in/ ',style={'color':'white','font-size':'20px'}),
+                    html.H2('https://www.mohfw.gov.in/',style={'color':'white','font-size':'20px'}),
                     html.H2('Johns Hopkins University',style={'color':'white','font-size':'20px'})
                     
                       
