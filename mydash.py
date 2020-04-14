@@ -4,11 +4,74 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 import plotly.graph_objects as go
 import dash_bootstrap_components as dbc
-external_stylesheets =['https://codepen.io/chriddyp/pen/bWLwgP.css', dbc.themes.BOOTSTRAP]
-
-
 import pandas as pd
 import numpy as np
+import requests
+from bs4 import BeautifulSoup
+import pytz
+from datetime import date, timedelta
+from datetime import datetime
+from pytz import timezone
+
+website_url = requests.get('https://www.mohfw.gov.in/').text
+
+
+soup = BeautifulSoup(website_url,'lxml')
+
+time=soup.find('div',class_='status-update')
+
+last_update=time.find('span').text[7:]
+
+table = soup.find_all('table')
+
+df = pd.read_html(str(table))
+
+df_State=pd.DataFrame(df[0])
+
+df_State.drop('S. No.',axis=1,inplace=True)
+
+df_State=df_State.iloc[0:-2,:]
+df_State.columns=['Province_State','Confirmed','Recovered','Deaths']
+
+df_State['Confirmed']=df_State['Confirmed'].apply(int)
+df_State['Recovered']=df_State['Recovered'].apply(int)
+df_State['Deaths']=df_State['Deaths'].apply(int)
+
+
+#Reading State wise Cooordinate file from my repo on github
+df_coor=pd.read_csv('https://raw.githubusercontent.com/shakya2417/Titanic_Survival/master/State_data.txt',sep='\t',error_bad_lines=False)
+df_coor.columns=['Province_State','Lat','Long_']
+
+df_coor['Province_State']=df_coor['Province_State'].apply(lambda x :x.strip())
+
+
+
+df_State=df_State.merge(df_coor,how='right')
+
+df_State.fillna(value=0,inplace=True)
+
+df_State['Active']=df_State['Deaths']
+def active(data):
+  for i in range(len(data)):
+    data['Active'][i]=data['Confirmed'][i]-data['Recovered'][i]-data['Deaths'][i]
+
+active(df_State)
+
+df_State['Country_Region']='India'
+
+df_State['Combined_Key']=df_State['Province_State']+', '+df_State['Country_Region']
+#State data ends here
+
+##setting date for url
+
+tz_India = pytz.timezone('Asia/Kolkata')
+dat=(datetime.now(tz_India)-timedelta(days=1)).strftime('%m-%d-%y')
+dat=str(dat)+'20'
+
+
+
+
+
 
 #importing time series data
 ts_death=pd.read_csv('https://github.com/CSSEGISandData/COVID-19/raw/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv')
@@ -116,76 +179,7 @@ fig1=go.Figure(data = [trace_11],layout = layout_line)
 fig2=go.Figure(data = [trace_22],layout = layout_line)
 fig3=go.Figure(data = [trace_33],layout = layout_line)
 
-#Scrapping Indian State data
 
-import requests
-
-website_url = requests.get('https://www.mohfw.gov.in/').text
-
-from bs4 import BeautifulSoup
-soup = BeautifulSoup(website_url,'lxml')
-
-time=soup.find('div',class_='status-update')
-
-last_update=time.find('span').text[7:]
-
-table = soup.find_all('table')
-
-df = pd.read_html(str(table))
-
-df_State=pd.DataFrame(df[0])
-
-df_State.drop('S. No.',axis=1,inplace=True)
-
-df_State=df_State.iloc[0:-2,:]
-df_State.columns=['Province_State','Confirmed','Recovered','Deaths']
-
-df_State['Confirmed']=df_State['Confirmed'].apply(int)
-df_State['Recovered']=df_State['Recovered'].apply(int)
-df_State['Deaths']=df_State['Deaths'].apply(int)
-
-
-#Reading State wise Cooordinate file from my repo on github
-df_coor=pd.read_csv('https://raw.githubusercontent.com/shakya2417/Titanic_Survival/master/State_data.txt',sep='\t',error_bad_lines=False)
-df_coor.columns=['Province_State','Lat','Long_']
-
-df_coor['Province_State']=df_coor['Province_State'].apply(lambda x :x.strip())
-
-
-
-df_State=df_State.merge(df_coor,how='right')
-
-df_State.fillna(value=0,inplace=True)
-
-df_State['Active']=df_State['Deaths']
-def active(data):
-  for i in range(len(data)):
-    data['Active'][i]=data['Confirmed'][i]-data['Recovered'][i]-data['Deaths'][i]
-
-active(df_State)
-
-df_State['Country_Region']='India'
-
-df_State['Combined_Key']=df_State['Province_State']+', '+df_State['Country_Region']
-#State data ends here
-
-
-
-
-
-
-
-
-
-
-##setting date for url
-import pytz
-from datetime import date, timedelta
-from datetime import datetime
-from pytz import timezone
-tz_India = pytz.timezone('Asia/Kolkata')
-dat=(datetime.now(tz_India)-timedelta(days=1)).strftime('%m-%d-%y')
-dat=str(dat)+'20'
 
 #Reading data again
 df=pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/'+dat+'.csv')
@@ -436,6 +430,7 @@ style_up={'text-align':'center','width':'300px','display':'inline-block'}
 
 
 #external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+external_stylesheets =['https://codepen.io/chriddyp/pen/bWLwgP.css', dbc.themes.BOOTSTRAP]
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server=app.server
