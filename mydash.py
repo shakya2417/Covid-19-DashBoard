@@ -30,7 +30,7 @@ df_State=pd.DataFrame(df[0])
 
 df_State.drop('S. No.',axis=1,inplace=True)
 
-df_State=df_State.iloc[0:-2,:]
+df_State=df_State.iloc[0:-3,:]
 df_State.columns=['Province_State','Confirmed','Recovered','Deaths']
 
 df_State['Confirmed']=df_State['Confirmed'].apply(int)
@@ -205,21 +205,21 @@ def cases(val):
   if val==0:
     return 0.1
   elif val>=1 and val<5:
-    return 6
+    return 4
   elif val>=5 and val<10:
-    return 9
+    return 7
   elif val>=10 and val<25:
-    return 11
+    return 10
   elif val>=25 and val<100:
-    return 14
+    return 13
   elif val>=100 and val<200:
-    return 18
+    return 16
   elif val>=200 and val<500:
-    return 22
+    return 19
   elif val>=500 and val<1000:
-    return 25
+    return 22
   elif val>=1000 and val<2000:
-    return 28
+    return 25
   elif val>=2000 and val<5000:
     return 30
   elif val>=5000 and val<20000:
