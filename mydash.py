@@ -30,7 +30,7 @@ df_State=pd.DataFrame(df[0])
 
 df_State.drop('S. No.',axis=1,inplace=True)
 
-df_State=df_State.iloc[0:-3,:]
+df_State=df_State.iloc[0:-4,:]
 df_State.columns=['Province_State','Confirmed','Recovered','Deaths']
 
 df_State['Confirmed']=df_State['Confirmed'].apply(int)
