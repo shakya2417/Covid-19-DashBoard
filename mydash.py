@@ -28,7 +28,7 @@ df = pd.read_html(str(table))
 
 df_State=pd.DataFrame(df[0])
 
-df_State.drop('S. No.',axis=1,inplace=True)
+df_State.drop(['S. No.','Active Cases*'],axis=1,inplace=True)
 
 df_State=df_State.iloc[0:-6,:]
 df_State.columns=['Province_State','Confirmed','Recovered','Deaths']
