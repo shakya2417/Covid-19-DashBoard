@@ -158,7 +158,7 @@ for country in s3.columns.values[1:]:
 
 
 
-#ime series plot
+#time series plot
 trace_11=(go.Scatter(x=s1['Date'],y=s1['India'],
             name='India',line=dict(width = 2,
                                     color = 'rgb(229, 151, 50)'),opacity=0.8))
@@ -185,14 +185,14 @@ fig3=go.Figure(data = [trace_33],layout = layout_line)
 df=pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/'+dat+'.csv')
 
 
-df.drop(['FIPS','Admin2','Last_Update'],axis=1,inplace=True)
+df.drop(['FIPS','Admin2','Last_Update','Incidence_Rate','Case-Fatality_Ratio'],axis=1,inplace=True)
 
 
-df=pd.concat([df,df_State])
+#df=pd.concat([df,df_State])
 
-df.drop(index=df.index[df['Combined_Key'] == 'India'].tolist()[0],inplace=True)
+#df.drop(index=df.index[df['Combined_Key'] == 'India'].tolist()[0],inplace=True)
 
-df=df.reset_index().drop('index',axis=1)
+#df=df.reset_index().drop('index',axis=1)
 
 
 def active(data):
@@ -237,7 +237,7 @@ def cases(val):
   elif val>85000:
     return 65
 
-df['mar_size']=df['Confirmed'].apply(cases)
+df['mar_size']=df['Active'].apply(cases)
 df['Confirmed']=df['Confirmed'].astype(int)
 df['Recovered']=df['Recovered'].astype(int)
 df['Active']=df['Active'].astype(int)
