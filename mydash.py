@@ -237,7 +237,7 @@ def cases(val):
   elif val>85000:
     return 65
 
-df['mar_size']=df['Active'].apply(cases)
+df['mar_size']=df['Confirmed'].apply(cases)
 df['Confirmed']=df['Confirmed'].astype(int)
 df['Recovered']=df['Recovered'].astype(int)
 df['Active']=df['Active'].astype(int)
