@@ -182,8 +182,8 @@ fig3=go.Figure(data = [trace_33],layout = layout_line)
 
 
 #Reading data again
-df=pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/'+dat+'.csv')
-
+#df=pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/'+dat+'.csv')
+df=pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/07-04-2020.csv')
 
 df.drop(['FIPS','Admin2','Last_Update','Incidence_Rate','Case-Fatality_Ratio'],axis=1,inplace=True)
 
@@ -445,7 +445,7 @@ app.layout=html.Div([
             
                 html.H1(' COVID-19 DashBaord', style={'color':'white','font-size':'50px','font-weight':'300',
               'textAlign': 'center', 'margin': '48px 0', 'fontFamily': 'system-ui'}),
-                html.H3('Last Updated:'+last_update, style={'color':'white','font-weight':'300',
+                html.H3('Last Updated(India):'+last_update, style={'color':'white','font-weight':'300',
               'text-align': 'right','position':'top','margin': '48px 0', 'fontFamily': 'system-ui'}),
                 
         
