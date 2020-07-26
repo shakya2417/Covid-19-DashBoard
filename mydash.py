@@ -65,7 +65,7 @@ df_State['Combined_Key']=df_State['Province_State']+', '+df_State['Country_Regio
 ##setting date for url
 
 tz_India = pytz.timezone('Asia/Kolkata')
-dat=(datetime.now(tz_India)-timedelta(days=1)).strftime('%m-%d-%y')
+dat=(datetime.now(tz_India)-timedelta(days=2)).strftime('%m-%d-%y')
 dat=str(dat)+'20'
 
 
@@ -182,8 +182,8 @@ fig3=go.Figure(data = [trace_33],layout = layout_line)
 
 
 #Reading data again
-#df=pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/'+dat+'.csv')
-df=pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/07-04-2020.csv')
+df=pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/'+dat+'.csv')
+#df=pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/07-04-2020.csv')
 
 df.drop(['FIPS','Admin2','Last_Update','Incidence_Rate','Case-Fatality_Ratio'],axis=1,inplace=True)
 
