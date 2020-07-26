@@ -205,37 +205,37 @@ def cases(val):
   if val==0:
     return 0.1
   elif val>=1 and val<5:
-    return 4
+    return 2
   elif val>=5 and val<10:
-    return 7
+    return 4
   elif val>=10 and val<25:
-    return 10
+    return 8
   elif val>=25 and val<100:
-    return 13
+    return 10
   elif val>=100 and val<200:
-    return 16
+    return 13
   elif val>=200 and val<500:
-    return 19
+    return 16
   elif val>=500 and val<1000:
-    return 22
+    return 18
   elif val>=1000 and val<2000:
-    return 25
+    return 20
   elif val>=2000 and val<5000:
-    return 30
+    return 23
   elif val>=5000 and val<20000:
-    return 35
+    return 26
   elif val>=20000 and val<27000:
-    return 40
+    return 28
   elif val>=27000 and val<38000:
-    return 45
+    return 30
   elif val>=38000 and val<50000:
-    return 50
+    return 33
   elif val>=50000 and val<65000:
-    return 55
+    return 36
   elif val>=65000 and val<85000:
-    return 60
+    return 38
   elif val>85000:
-    return 65
+    return 43
 
 df['mar_size']=df['Confirmed'].apply(cases)
 df['Confirmed']=df['Confirmed'].astype(int)
