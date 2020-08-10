@@ -401,7 +401,7 @@ app.layout=html.Div([
 
 
             
-                html.H1(' COVID-19 DashBaord', style={'color':'white','font-size':'50px','font-weight':'300',
+                html.H1(' COVID-19 India DashBaord', style={'color':'white','font-size':'50px','font-weight':'300',
               'textAlign': 'center', 'margin': '48px 0', 'fontFamily': 'system-ui'}),
                 html.H3('Last Updated:'+dat, style={'color':'white','font-weight':'300',
               'text-align': 'right','position':'top','margin': '48px 0', 'fontFamily': 'system-ui'}),
