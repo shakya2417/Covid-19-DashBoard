@@ -6,60 +6,13 @@ import plotly.graph_objects as go
 import dash_bootstrap_components as dbc
 import pandas as pd
 import numpy as np
-import requests
-from bs4 import BeautifulSoup
 import pytz
 from datetime import date, timedelta
 from datetime import datetime
 from pytz import timezone
 
-website_url = requests.get('https://www.mohfw.gov.in/').text
 
 
-soup = BeautifulSoup(website_url,'lxml')
-
-time=soup.find('div',class_='status-update')
-
-last_update=time.find('span').text[7:]
-
-table = soup.find_all('table')
-
-df = pd.read_html(str(table))
-
-df_State=pd.DataFrame(df[0])
-
-df_State.drop(['S. No.','Active Cases*'],axis=1,inplace=True)
-
-df_State=df_State.iloc[0:-6,:]
-df_State.columns=['Province_State','Recovered','Deaths','Confirmed']
-
-df_State['Confirmed']=df_State['Confirmed'].apply(int)
-df_State['Recovered']=df_State['Recovered'].apply(int)
-df_State['Deaths']=df_State['Deaths'].apply(int)
-
-
-#Reading State wise Cooordinate file from my repo on github
-df_coor=pd.read_csv('https://raw.githubusercontent.com/shakya2417/Titanic_Survival/master/State_data.txt',sep='\t',error_bad_lines=False)
-df_coor.columns=['Province_State','Lat','Long_']
-
-df_coor['Province_State']=df_coor['Province_State'].apply(lambda x :x.strip())
-
-
-
-df_State=df_State.merge(df_coor,how='right')
-
-df_State.fillna(value=0,inplace=True)
-
-df_State['Active']=df_State['Deaths']
-def active(data):
-  for i in range(len(data)):
-    data['Active'][i]=data['Confirmed'][i]-data['Recovered'][i]-data['Deaths'][i]
-
-active(df_State)
-
-df_State['Country_Region']='India'
-
-df_State['Combined_Key']=df_State['Province_State']+', '+df_State['Country_Region']
 #State data ends here
 
 ##setting date for url
@@ -188,11 +141,6 @@ df=pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master
 df.drop(['FIPS','Admin2','Last_Update','Incidence_Rate','Case-Fatality_Ratio'],axis=1,inplace=True)
 
 
-#df=pd.concat([df,df_State])
-
-#df.drop(index=df.index[df['Combined_Key'] == 'India'].tolist()[0],inplace=True)
-
-#df=df.reset_index().drop('index',axis=1)
 
 
 def active(data):
@@ -204,44 +152,54 @@ active(df)
 def cases(val):
   if val==0:
     return 0.1
-  elif val>=1 and val<5:
+  elif val>=1 and val<100:
     return 2
-  elif val>=5 and val<10:
-    return 4
-  elif val>=10 and val<25:
-    return 8
-  elif val>=25 and val<100:
-    return 10
   elif val>=100 and val<200:
-    return 13
-  elif val>=200 and val<500:
-    return 16
+    return 4
+  elif val>=200 and val<300:
+    return 6
+  elif val>=300 and val<500:
+    return 8
   elif val>=500 and val<1000:
+    return 10
+  elif val>=1000 and val<5000:
+    return 12
+  elif val>=5000 and val<15000:
+    return 15
+  elif val>=15000 and val<35000:
     return 18
-  elif val>=1000 and val<2000:
-    return 20
-  elif val>=2000 and val<5000:
+  elif val>=35000 and val<60000:
     return 23
-  elif val>=5000 and val<20000:
-    return 26
-  elif val>=20000 and val<27000:
-    return 28
-  elif val>=27000 and val<38000:
-    return 30
-  elif val>=38000 and val<50000:
-    return 33
-  elif val>=50000 and val<65000:
+  elif val>=60000 and val<90000:
+    return 27
+  elif val>=90000 and val<110000:
+    return 32
+  elif val>=110000 and val<150000:
     return 36
-  elif val>=65000 and val<85000:
-    return 38
-  elif val>85000:
-    return 43
-
+  elif val>=150000 and val<200000:
+    return 39
+  elif val>=200000 and val<250000:
+    return 44
+  elif val>=250000 and val<350000:
+    return 47
+  elif val>=350000 and val<450000:
+    return 50
+  elif val>=450000 and val<500000:
+    return 54
+  elif val>=500000 and val<650000:
+    return 60
+  elif val>=650000 and val<750000:
+    return 65
+  elif val>750000:
+    return 70
 df['mar_size']=df['Confirmed'].apply(cases)
 df['Confirmed']=df['Confirmed'].astype(int)
 df['Recovered']=df['Recovered'].astype(int)
 df['Active']=df['Active'].astype(int)
 df['Deaths']=df['Deaths'].astype(int)
+
+#State data
+df_State=df[df['Country_Region']=='India']
 
 
 #mapbox ploting start here..
@@ -276,10 +234,10 @@ layout=dict(height = 600,
 
 
 # tabs data start here.
-df.drop(['Lat','Long_'],axis=1,inplace=True)
+#df.drop(['Lat','Long_'],axis=1,inplace=True)
 
 
-df_group=df.groupby('Country_Region',as_index=False).sum()
+#df_group=df.groupby('Country_Region',as_index=False).sum()
 
 
 
@@ -445,7 +403,7 @@ app.layout=html.Div([
             
                 html.H1(' COVID-19 DashBaord', style={'color':'white','font-size':'50px','font-weight':'300',
               'textAlign': 'center', 'margin': '48px 0', 'fontFamily': 'system-ui'}),
-                html.H3('Last Updated(India):'+last_update, style={'color':'white','font-weight':'300',
+                html.H3('Last Updated:'+dat, style={'color':'white','font-weight':'300',
               'text-align': 'right','position':'top','margin': '48px 0', 'fontFamily': 'system-ui'}),
                 
         
