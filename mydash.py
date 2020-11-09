@@ -18,7 +18,7 @@ from pytz import timezone
 ##setting date for url
 
 tz_India = pytz.timezone('Asia/Kolkata')
-dat=(datetime.now(tz_India)-timedelta(days=2)).strftime('%m-%d-%y')
+dat=(datetime.now(tz_India)-timedelta(days=2)).strftime('%d-%m-%y')
 dat=str(dat)+'20'
 
 
