@@ -18,10 +18,8 @@ from pytz import timezone
 ##setting date for url
 
 tz_India = pytz.timezone('Asia/Kolkata')
-dat=(datetime.now(tz_India)-timedelta(days=2)).strftime('%d-%m-%y')
+dat=(datetime.now(tz_India)-timedelta(days=2)).strftime('%m-%d-%y')
 dat=str(dat)+'20'
-
-
 
 
 
@@ -137,8 +135,8 @@ fig3=go.Figure(data = [trace_33],layout = layout_line)
 #Reading data again
 df=pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/'+dat+'.csv')
 #df=pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/07-04-2020.csv')
-
-df.drop(['FIPS','Admin2','Last_Update','Incidence_Rate','Case-Fatality_Ratio'],axis=1,inplace=True)
+last_updat=df['Last_Update'][0]
+df.drop(['FIPS','Admin2','Last_Update','Incident_Rate','Case_Fatality_Ratio'],axis=1,inplace=True)
 
 
 
@@ -403,7 +401,7 @@ app.layout=html.Div([
             
                 html.H1(' COVID-19 India DashBaord', style={'color':'white','font-size':'50px','font-weight':'300',
               'textAlign': 'center', 'margin': '48px 0', 'fontFamily': 'system-ui'}),
-                html.H3('Last Updated:'+dat, style={'color':'white','font-weight':'300',
+                html.H3('Last Updated:'+last_updat, style={'color':'white','font-weight':'300',
               'text-align': 'right','position':'top','margin': '48px 0', 'fontFamily': 'system-ui'}),
                 
         
