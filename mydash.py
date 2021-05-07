@@ -1,3 +1,4 @@
+
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -11,20 +12,10 @@ from datetime import date, timedelta
 from datetime import datetime
 from pytz import timezone
 
-
-
-#State data ends here
-
-##setting date for url
-
 tz_India = pytz.timezone('Asia/Kolkata')
 dat=(datetime.now(tz_India)-timedelta(days=2)).strftime('%m-%d-20%y')
 #dat=str(dat)+'20'
 
-
-
-
-#importing time series data
 ts_death=pd.read_csv('https://github.com/CSSEGISandData/COVID-19/raw/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv')
 ts_recovered=pd.read_csv('https://github.com/CSSEGISandData/COVID-19/raw/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv')
 ts_confirm=pd.read_csv('https://github.com/CSSEGISandData/COVID-19/raw/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv')
@@ -32,7 +23,6 @@ ts_confirm=pd.read_csv('https://github.com/CSSEGISandData/COVID-19/raw/master/cs
 ts_confirm.columns=list(ts_confirm.columns)
 ts_recovered.columns=list(ts_recovered.columns)
 ts_death.columns=list(ts_death.columns)
-
 ts_confirm.columns.values[:2]=['State','Country']
 ts_recovered.columns.values[:2]=['State','Country']
 ts_death.columns.values[:2]=['State','Country']
@@ -60,6 +50,7 @@ s1=ts_co.transpose().reset_index()
 s2=ts_re.transpose().reset_index()
 s3=ts_de.transpose().reset_index()
 
+
 s1.drop(0,inplace=True)
 s2.drop(0,inplace=True)
 s3.drop(0,inplace=True)
@@ -77,6 +68,7 @@ col3=list(ts_de["Country"].unique())
 col3.insert(0,'Date')
 s3.columns=col3
 
+
 import datetime
 s1['Date']=pd.to_datetime(s1.Date).dt.date
 datelist1=pd.to_datetime(s1.Date)
@@ -86,9 +78,6 @@ datelist2=pd.to_datetime(s2.Date)
 
 s3['Date']=pd.to_datetime(s3.Date).dt.date
 datelist3=pd.to_datetime(s3.Date)
-
-
-
 
 
 options1 = []
@@ -105,11 +94,6 @@ for country in s3.columns.values[1:]:
     options3.append({'label':'{}'.format(country), 'value':country})
 
 
-
-
-
-
-#time series plot
 trace_11=(go.Scatter(x=s1['Date'],y=s1['India'],
             name='India',line=dict(width = 2,
                                     color = 'rgb(229, 151, 50)'),opacity=0.8))
@@ -131,21 +115,24 @@ fig2=go.Figure(data = [trace_22],layout = layout_line)
 fig3=go.Figure(data = [trace_33],layout = layout_line)
 
 
-
-#Reading data again
 df=pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/'+dat+'.csv')
 #df=pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/07-04-2020.csv')
 last_updat=df['Last_Update'][0]
 df.drop(['FIPS','Admin2','Last_Update','Incident_Rate','Case_Fatality_Ratio'],axis=1,inplace=True)
 
 
+df['Recovered']=df['Recovered'].fillna(0)
+df['Active']=df['Active'].fillna(0)
 
+df.dropna(axis=0, subset=['Long_'],inplace=True)
+df.reset_index(drop=True, inplace=True)
 
 def active(data):
-  for i in range(len(data)):
-    data['Active'][i]=data['Confirmed'][i]-data['Recovered'][i]-data['Deaths'][i]
+    for i in range(len(data)):
+        data['Active'][i]=data['Confirmed'][i]-data['Recovered'][i]-data['Deaths'][i]
 
 active(df)
+
 
 def cases(val):
   if val==0:
@@ -155,48 +142,54 @@ def cases(val):
   elif val>=100 and val<200:
     return 4
   elif val>=200 and val<300:
-    return 6
+    return 5
   elif val>=300 and val<500:
-    return 8
+    return 6
   elif val>=500 and val<1000:
-    return 10
+    return 8
   elif val>=1000 and val<5000:
-    return 12
+    return 9
   elif val>=5000 and val<15000:
-    return 15
+    return 10
   elif val>=15000 and val<35000:
-    return 18
+    return 13
   elif val>=35000 and val<60000:
-    return 23
+    return 16
   elif val>=60000 and val<90000:
-    return 27
+    return 19
   elif val>=90000 and val<110000:
-    return 32
+    return 24
   elif val>=110000 and val<150000:
-    return 36
+    return 28
   elif val>=150000 and val<200000:
-    return 39
+    return 34
   elif val>=200000 and val<250000:
-    return 44
+    return 39
   elif val>=250000 and val<350000:
-    return 47
+    return 43
   elif val>=350000 and val<450000:
-    return 50
+    return 48
   elif val>=450000 and val<500000:
-    return 54
+    return 53
   elif val>=500000 and val<650000:
     return 60
   elif val>=650000 and val<750000:
-    return 65
-  elif val>750000:
-    return 70
+    return 68
+  elif val>=750000 and val<950000:
+    return 74
+  elif val>=950000 and val<1050000:
+    return 80
+  elif val>=1050000 and val<1250000:
+    return 98
+  elif val>1250000:
+    return 108
+
 df['mar_size']=df['Confirmed'].apply(cases)
 df['Confirmed']=df['Confirmed'].astype(int)
 df['Recovered']=df['Recovered'].astype(int)
 df['Active']=df['Active'].astype(int)
 df['Deaths']=df['Deaths'].astype(int)
 
-#State data
 df_State=df[df['Country_Region']=='India']
 
 
@@ -476,7 +469,7 @@ app.layout=html.Div([
                           ),
 
                     #line charts
-                        html.H1('Time Series Plot',style=style_tab_heading),
+                        html.H1('Time Series Plot(Log Scale)',style=style_tab_heading),
                         html.Div([
                                   html.H2("Search Countries to Compare with India",style=style_tab_heading),
                                   dcc.Dropdown(id = 'opt1', options = options1,
