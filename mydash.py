@@ -357,7 +357,7 @@ def table_plot(x,y):
     date_str=y_obj.strftime("%d-%m-%Y") 
     URL = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id={}&date={}".format(DIST_ID, date_str)
     response = requests.get(URL, headers=browser_header)
-    resp_json = json.load(response.text)['centers']
+    resp_json = json.loads(response.text)['centers']
     total_centre=[]
     for i in range(len(resp_json)):
         for session in resp_json[i]['sessions']:
