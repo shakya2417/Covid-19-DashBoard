@@ -11,6 +11,8 @@ import pytz
 from datetime import date, timedelta
 from datetime import datetime
 from pytz import timezone
+import requests,json
+
 
 tz_India = pytz.timezone('Asia/Kolkata')
 dat=(datetime.now(tz_India)-timedelta(days=2)).strftime('%m-%d-20%y')
@@ -340,6 +342,66 @@ hovertemplate=
         "<extra></extra>")
 
 
+######### Vaccine slot start here
+browser_header = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36'}
+def load_mapping():
+    df = pd.read_csv("district_mapping.csv")
+    df['district name']=df['district name'].apply(lambda x: x.lower())
+    return df
+mapping_df = load_mapping()
+mapping_dict = pd.Series(mapping_df["district id"].values,
+                         index = mapping_df["district name"].values).to_dict()
+def table_plot(x,y):
+    DIST_ID = mapping_dict[x.lower()]
+    y_obj=datetime.datetime.strptime(y, "%Y-%m-%d").date()
+    date_str=y_obj.strftime("%d-%m-%Y") 
+    URL = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id={}&date={}".format(DIST_ID, date_str)
+    response = requests.get(URL, headers=browser_header)
+    resp_json = json.loads(response.text)['centers']
+    total_centre=[]
+    for i in range(len(resp_json)):
+        for session in resp_json[i]['sessions']:
+            session['name']=resp_json[i]['name']
+            session['address']=resp_json[i]['address']
+            session['district_name']=resp_json[i]['district_name']
+            total_centre.append(session)
+    df_table = pd.DataFrame(total_centre)
+    df_table.drop('session_id',axis=1,inplace=True)
+    df_table['slots']=df_table['slots'].apply(lambda x: ', '.join(x))
+    columns=['Date','District','Address','Hospital Name','Vaccine','Age Limit','Availability','Slots']
+    layout_table=go.Layout(height = 500,
+    margin = dict(t = 0, b = 0, l = 0, r = 0),
+    font = dict(color = '#FFFFFF', size = 11),)
+    fig = go.Figure(data=[go.Table(
+        columnwidth = [800,800,800,800,1100],
+        header=dict(values=columns,
+                    fill_color='#66CDAA',
+                    align='left',
+                    line_width=2,
+                   font=dict(size=20),height=40),
+        cells=dict(values=[df_table.date,df_table.district_name,df_table.address,df_table.name,   
+                          df_table.vaccine,df_table.min_age_limit,df_table.available_capacity,df_table.slots],
+                   fill_color='#100e17',
+                   align='left',
+                   line_width=2,
+        font = dict(color = 'white', size = 16)))
+    ],layout=layout_table)
+    return fig
+base = datetime.datetime.today()
+curr_date=base.strftime("%Y-%m-%d")
+columns=['Date','District','Address','Hospital Name','Vaccine','Age Limit','Availability','Slots']
+fig_table = go.Figure(data=[go.Table(
+    columnwidth = [800,800,800,800,1100],
+    header=dict(values=columns,
+                fill_color='paleturquoise',
+                align='left'),
+    cells=dict(values=[0, 0, 0, 0,
+                      0,0,0,0],
+               fill_color='lavender',
+               align='left'))
+])
+
+
 #tabs Styling
 tabs_styles = {
     'height': '44px'
@@ -578,16 +640,29 @@ app.layout=html.Div([
                      ]),
 
                   ],style=tab_style, selected_style=tab_selected_style),
-                  dcc.Tab(label='Total Active', children=[
+                  dcc.Tab(label='Vaccine Availabilty', children=[
                      html.Div([
-                        html.H1(" Active Cases in India ",style=style_tab_heading),
-                          dcc.Graph(id='Active_bar',
-                            figure={'data':[trace_act],'layout':layout_bar}
-                          ),
-                        html.H1('Pie Chart of Active Cases in India',style=style_tab_heading),
-                          dcc.Graph(id='Active_Pie',
-                            figure={'data':[pie_act],'layout':layout_pie})
-                          ])
+                        html.H1("Vaccine Slot Availabilty",style={'color':'white','font-size':'50px','font-weight':'300',
+                                        'textAlign': 'center', 'margin': '48px 0', 'fontFamily': 'system-ui'}),
+                          html.Div(
+                                  children=[
+                                dcc.Input(
+                                      id='input-x',
+                                      placeholder='Enter your District',
+                                      type='text',
+                                      value='Mainpuri',style = {'width': '300px','fontSize' : '20px','padding-left' : '50px',}
+                                  ),
+                                dcc.Input(
+                                      id='input-y',
+                                      placeholder='Enter the date',
+                                      type='Date',
+                                      value=curr_date,style = {'width': '300px','fontSize' : '20px','padding-left' : '50px'},
+                                  )],style=dict(display='flex', justifyContent='center')),
+                              html.Br(),
+                              html.Br(),
+                              html.Div(dcc.Graph(id = 'result',figure = fig_table))
+                              ],className="panel panel-default",style={'background-color':'#100e17','border':'10px #2F4F4F solid'
+                                  ,'margin':'10px'})
                      ],style=tab_style, selected_style=tab_selected_style),
 
 
@@ -688,12 +763,17 @@ app.layout=html.Div([
         ],style={'background-color':'#2F4F4F'})
 
 
+#vaccine call back
+@app.callback(
+    Output('result', 'figure'),
+    [Input('input-x', 'value'),
+     Input('input-y', 'value')]
+)
+def update_result(x, y):
+    fig_table=table_plot(x,y)
 
-
-
-
-
-
+    
+    return fig_table
 
 
 
@@ -762,49 +842,3 @@ def update_figure(input1,input2):
     
 if __name__ == '__main__':
     app.run_server()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
