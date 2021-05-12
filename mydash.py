@@ -343,7 +343,7 @@ hovertemplate=
 
 
 ######### Vaccine slot start here
-browser_header = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36'}
+
 def load_mapping():
     df = pd.read_csv("district_mapping.csv")
     df['district name']=df['district name'].apply(lambda x: x.lower())
@@ -357,7 +357,7 @@ def table_plot(x,y):
     date_str=y_obj.strftime("%d-%m-%Y") 
     URL = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id={}&date={}".format(DIST_ID, date_str)
     response = requests.get(URL)
-    print(response.text)
+    print(response)
     resp_json = response.json()['centers']
     total_centre=[]
     for i in range(len(resp_json)):
