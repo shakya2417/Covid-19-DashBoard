@@ -356,7 +356,7 @@ def table_plot(x,y):
     y_obj=datetime.datetime.strptime(y, "%Y-%m-%d").date()
     date_str=y_obj.strftime("%d-%m-%Y") 
     URL = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id={}&date={}".format(DIST_ID, date_str)
-    response = requests.get(URL, headers=browser_header)
+    response = requests.get(URL)
     print(response.text)
     resp_json = response.json()['centers']
     total_centre=[]
